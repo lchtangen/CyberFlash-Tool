@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Features — CyberFlash Tool</title>
+  <style>
+    :root{--bg:#0a0e1a;--bg2:#0f1525;--bg3:#151d30;--border:#1e2d4a;--cyan:#00d4ff;--cyan-dim:#0099bb;--green:#00ff88;--green-dim:#00bb66;--purple:#9d4edd;--red:#ff4466;--yellow:#ffcc00;--text:#c8d8f0;--text-dim:#6a82a0;--font-mono:'Courier New',Courier,monospace;--font-sans:'Segoe UI',system-ui,sans-serif}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-sans);line-height:1.6;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,14,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+    .nav-brand{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--cyan);text-decoration:none;letter-spacing:2px;text-shadow:0 0 12px rgba(0,212,255,0.5)}
+    .nav-links{display:flex;gap:1.5rem;list-style:none}
+    .nav-links a{color:var(--text-dim);text-decoration:none;font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}
+    .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+    .page-hero{position:relative;z-index:1;text-align:center;padding:5rem 2rem 3rem}
+    .section-label{font-family:var(--font-mono);font-size:0.75rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:0.6rem}
+    h1{font-family:var(--font-mono);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:0.75rem}
+    .hero-desc{max-width:680px;margin:0 auto;color:var(--text-dim);font-size:0.95rem;line-height:1.8}
+    section{position:relative;z-index:1;padding:3rem 2rem;max-width:1100px;margin:0 auto}
+    h2{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:0.4rem}
+    .tier-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem}
+    .tier-intro{color:var(--text-dim);font-size:0.9rem;margin-bottom:1.75rem;max-width:700px;line-height:1.7}
+    .stripe{background:#0f1525}
+
+    .feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:0.5rem}
+    .feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1.25rem;transition:border-color 0.2s,box-shadow 0.2s}
+    .feat-card:hover{border-color:var(--cyan-dim);box-shadow:0 0 16px rgba(0,212,255,0.07)}
+    .feat-card h3{font-family:var(--font-mono);font-size:0.85rem;color:var(--cyan);margin-bottom:0.5rem;letter-spacing:1px}
+    .feat-card p{font-size:0.82rem;color:var(--text-dim);line-height:1.7}
+    .feat-card ul{list-style:none;margin-top:0.5rem;display:flex;flex-direction:column;gap:0.2rem}
+    .feat-card ul li{font-size:0.78rem;color:var(--text-dim);padding-left:1rem;position:relative}
+    .feat-card ul li::before{content:'·';position:absolute;left:0;color:var(--cyan)}
+
+    .brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+    .brand-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1.25rem;transition:border-color 0.2s}
+    .brand-card:hover{border-color:rgba(0,255,136,0.25)}
+    .brand-name{font-family:var(--font-mono);font-size:1rem;color:var(--green);font-weight:700;margin-bottom:0.4rem}
+    .brand-sub{font-size:0.72rem;color:var(--text-dim);font-family:var(--font-mono);margin-bottom:0.6rem}
+    .brand-card ul{list-style:none;display:flex;flex-direction:column;gap:0.2rem}
+    .brand-card ul li{font-size:0.78rem;color:var(--text-dim);padding-left:1rem;position:relative}
+    .brand-card ul li::before{content:'→';position:absolute;left:0;color:var(--green);font-family:var(--font-mono);font-size:0.72rem}
+
+    .contrib-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+    .step-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1.25rem;position:relative}
+    .step-num{font-family:var(--font-mono);font-size:2rem;font-weight:900;color:rgba(0,212,255,0.1);position:absolute;top:0.75rem;right:1rem;line-height:1}
+    .step-card h3{font-family:var(--font-mono);font-size:0.9rem;color:var(--cyan);margin-bottom:0.5rem}
+    .step-card p{font-size:0.82rem;color:var(--text-dim);line-height:1.7}
+    .step-card code{font-family:var(--font-mono);font-size:0.78rem;color:var(--green);background:rgba(0,255,136,0.06);padding:1px 5px;border-radius:2px}
+
+    footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center}
+    .footer-brand{font-family:var(--font-mono);font-size:1.2rem;color:var(--cyan);letter-spacing:4px;text-shadow:0 0 12px rgba(0,212,255,0.3);margin-bottom:0.4rem}
+    .footer-links{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin:0.75rem 0}
+    .footer-links a{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;transition:color 0.2s}
+    .footer-links a:hover{color:var(--cyan)}
+    .footer-copy{font-size:0.72rem;color:var(--text-dim);opacity:0.5}
+    @media(max-width:640px){.nav-links{display:none}section{padding:2.5rem 1.25rem}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">⚡ CYBERFLASH</a>
+  <ul class="nav-links">
+    <li><a href="features.html" class="active">Features</a></li>
+    <li><a href="screenshots.html">Screenshots</a></li>
+    <li><a href="roadmap.html">Roadmap</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="section-label">// complete feature list</div>
+  <h1>Features</h1>
+  <p class="hero-desc">Every feature in CyberFlash — organized by tier and module. Production-ready features are fully tested. Planned features are clearly marked.</p>
+</div>
+
+<!-- TIER 1 -->
+<section>
+  <div class="tier-label" style="color:var(--cyan)">// tier 1 — production ready</div>
+  <h2>Core Flash Engine</h2>
+  <p class="tier-intro">The heart of CyberFlash. Every operation here is battle-tested with dry-run validation before any destructive action executes.</p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <h3>ROM Flash (fastboot)</h3>
+      <p>Sequential fastboot partition flash with step tracker. Supports boot, system, vendor, vbmeta, dtbo, and custom partition targets.</p>
+      <ul><li>Dry-run mode — simulate before commit</li><li>Danger confirmation dialogs</li><li>ANSI-colorized real-time log panel</li><li>Flash journal with rollback support</li></ul>
+    </div>
+    <div class="feat-card">
+      <h3>ROM Flash (sideload)</h3>
+      <p>ADB sideload for TWRP and stock recovery. Progress tracking and error detection throughout the sideload sequence.</p>
+      <ul><li>TWRP sideload support</li><li>Stock recovery sideload</li><li>Progress bar + ETA display</li></ul>
+    </div>
+    <div class="feat-card">
+      <h3>A/B Slot Management</h3>
+      <p>Full A/B partition scheme support. Switch active slot, inspect current slot, and ensure flashed partitions land on the correct slot.</p>
+      <ul><li>Active slot display and switch</li><li>Slot-aware flash sequencing</li><li>Post-flash slot verification</li></ul>
+    </div>
+    <div class="feat-card">
+      <h3>Wipe Operations</h3>
+      <p>Granular wipe control with confirmation for each dangerous operation. Never wipe the wrong partition by accident.</p>
+      <ul><li>Cache / Dalvik / Data / System</li><li>Vendor / Userdata wipe</li><li>Per-wipe danger confirmation</li></ul>
+    </div>
+    <div class="feat-card">
+      <h3>Device Detection</h3>
+      <p>Real-time ADB and fastboot hot-plug polling via DeviceService. Multi-device selector in the title bar. Device info page with full hardware summary.</p>
+      <ul><li>Hot-plug detect (ADB + fastboot)</li><li>Multi-device selector UI</li><li>Model, Android, BL status, serial</li></ul>
+    </div>
+    <div class="feat-card">
+      <h3>Preflight Checks</h3>
+      <p>Automated pre-flash safety verification: bootloader state, battery level, storage space, ADB authorization, and profile compatibility.</p>
+      <ul><li>Battery level gate (≥30%)</li><li>Storage space check</li><li>ADB authorization verify</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- TIER 2 -->
+<div class="stripe">
+<section>
+  <div class="tier-label" style="color:var(--purple)">// tier 2 — production ready</div>
+  <h2>Root &amp; Security</h2>
+  <p class="tier-intro">Complete root lifecycle management. From initial installation through module management to Play Integrity compliance.</p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <h3>Root Detection</h3>
+      <p>Automatically detects root method on every device connect. Distinguishes between Magisk, KernelSU, APatch, other root, and unrooted states.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Magisk Boot Patch</h3>
+      <p>Full automated boot patching: push original boot image → launch Magisk → poll for patched image → pull → flash via fastboot. All steps logged.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Module Manager</h3>
+      <p>Browse, install, enable, disable, and remove Magisk and KernelSU modules. Online repo browser with search and filter. Install from local ZIP.</p>
+    </div>
+    <div class="feat-card">
+      <h3>DenyList &amp; Root Hide</h3>
+      <p>Per-app DenyList configuration via Magisk. Banking-safe preset applies the correct hiding configuration for major financial app packages automatically.</p>
+    </div>
+    <div class="feat-card">
+      <h3>AnyKernel3 Flash</h3>
+      <p>Flash custom kernels via AnyKernel3 using sideload or ADB push. Automatic boot image backup before every flash. One-click rollback to saved boot image.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Play Integrity Checker</h3>
+      <p>3-tier verification: BASIC (device passes basic checks), DEVICE (hardware attestation), STRONG (full hardware-backed key attestation). JSON history log.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Token Vault</h3>
+      <p>AES-256-GCM encrypted storage for OEM unlock tokens, API keys, and device credentials. Backed by OS keychain (keyring) with PBKDF2 master key derivation.</p>
+    </div>
+    <div class="feat-card">
+      <h3>dm-verity &amp; Encryption</h3>
+      <p>Toggle Android Verified Boot (dm-verity) and force-encryption from the root page. Essential for certain custom ROM workflows that require these to be disabled.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- TIER 3 -->
+<section>
+  <div class="tier-label" style="color:var(--yellow)">// tier 3 — production ready</div>
+  <h2>ROM Library &amp; Downloads</h2>
+  <p class="tier-intro">Find, evaluate, download, and verify ROMs without leaving the app. AI-powered trust scoring ensures you only download from reliable sources.</p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <h3>AI Trust Scoring</h3>
+      <p>Every ROM source is scored across four AI-evaluated dimensions: Availability (uptime/reliability), Safety (malware/tampering risk), Speed (server throughput), Reputation (community signals).</p>
+    </div>
+    <div class="feat-card">
+      <h3>Resumable Downloads</h3>
+      <p>Chunked HTTP/HTTPS download with Range header support. Interrupted downloads resume from where they stopped — no re-downloading gigabytes from scratch.</p>
+    </div>
+    <div class="feat-card">
+      <h3>SHA-256 Verification</h3>
+      <p>Every downloaded ROM is automatically verified against its SHA-256 checksum post-download. Failed verification triggers a re-download prompt, not a silent failure.</p>
+    </div>
+    <div class="feat-card">
+      <h3>payload.bin Extractor</h3>
+      <p>Extract individual partition images from OTA payload.bin files directly in the app. Inline protobuf parser — no external tools or Python packages required.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Download History</h3>
+      <p>Per-device download history persisted to a JSON flat file. Already-downloaded ROMs are detected on page load. History survives app restarts and system reboots.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Source Flagging</h3>
+      <p>Low-trust sources are flagged with visible warnings. Flagged sources require explicit user acknowledgement before download begins — no accidental downloads from sketchy mirrors.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MULTI-BRAND -->
+<div class="stripe">
+<section>
+  <div class="tier-label" style="color:var(--green)">// tier 4 — production ready</div>
+  <h2>Multi-Brand Flash Support</h2>
+  <p class="tier-intro">Native flash engines for every major Android OEM. No third-party tools required — all protocols implemented directly in CyberFlash.</p>
+  <div class="brand-grid">
+    <div class="brand-card">
+      <div class="brand-name">Samsung</div>
+      <div class="brand-sub">via Heimdall (open-source Odin replacement)</div>
+      <ul>
+        <li>PIT file parser and validator</li>
+        <li>TAR partition flash with checksums</li>
+        <li>Repartition support</li>
+        <li>Download Mode detection</li>
+      </ul>
+    </div>
+    <div class="brand-card">
+      <div class="brand-name">Xiaomi / POCO / Redmi</div>
+      <div class="brand-sub">MIUI / HyperOS fastboot protocol</div>
+      <ul>
+        <li>fastboot flash sequences</li>
+        <li>Anti-Rollback (ARB) check and warning</li>
+        <li>Bootloader unlock flow</li>
+        <li>HyperOS partition scheme support</li>
+      </ul>
+    </div>
+    <div class="brand-card">
+      <div class="brand-name">Google Pixel</div>
+      <div class="brand-sub">Factory image + OTA protocol</div>
+      <ul>
+        <li>Factory image unpack and flash</li>
+        <li>Bootloader + radio update sequence</li>
+        <li>OTA sideload via ADB</li>
+        <li>Android 14+ protocol support</li>
+      </ul>
+    </div>
+    <div class="brand-card">
+      <div class="brand-name">Motorola</div>
+      <div class="brand-sub">RSA rescue + fastboot</div>
+      <ul>
+        <li>flashfile.xml parser</li>
+        <li>Firmware directory flash</li>
+        <li>Unlock code submission workflow</li>
+        <li>Rescue mode detection</li>
+      </ul>
+    </div>
+    <div class="brand-card">
+      <div class="brand-name">Any Qualcomm Device</div>
+      <div class="brand-sub">EDL — Emergency Download Mode</div>
+      <ul>
+        <li>EDL mode detection and entry</li>
+        <li>Partition flash via EDL protocol</li>
+        <li>Last-resort recovery for bricked devices</li>
+      </ul>
+    </div>
+    <div class="brand-card">
+      <div class="brand-name">Any Device</div>
+      <div class="brand-sub">JSON device profile system</div>
+      <ul>
+        <li>Add support via a JSON file</li>
+        <li>No Python required to contribute</li>
+        <li>Validated against schema.json</li>
+        <li>A/B and non-A/B slots supported</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- CONTRIBUTING -->
+<section>
+  <div class="tier-label" style="color:var(--green)">// open source</div>
+  <h2>How to Contribute</h2>
+  <p class="tier-intro">CyberFlash is MIT-licensed. The architecture is designed so any developer — Python expert or beginner — can contribute meaningfully.</p>
+  <div class="contrib-steps">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h3>Add a Device Profile</h3>
+      <p>Create a JSON file in <code>resources/profiles/your-brand/codename.json</code>. Follow the schema at <code>resources/profiles/schema.json</code>. No Python required.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h3>Fix a Bug</h3>
+      <p>Fork the repo, create a branch, reproduce the bug in a test, fix it, verify <code>pytest tests/</code> passes, open a PR with the device codename and log output.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h3>Write Tests</h3>
+      <p>All <code>core/</code> modules are pure Python — testable without a physical device. We target 900+ tests. Each new feature needs coverage before merge.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <h3>Review Standards</h3>
+      <p>Run <code>ruff check src/</code> and <code>mypy src/</code> before opening a PR. Type hints are required on all public functions. Line length: 100 chars.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">⚡ CYBERFLASH</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="screenshots.html">Screenshots</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="changelog.html">Changelog</a>
+    <a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a>
+  </div>
+  <div class="footer-copy">MIT License · &copy; 2026 Lchtangen &amp; Contributors</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roadmap — CyberFlash Tool</title>
+  <style>
+    :root{--bg:#0a0e1a;--bg2:#0f1525;--bg3:#151d30;--border:#1e2d4a;--cyan:#00d4ff;--cyan-dim:#0099bb;--green:#00ff88;--green-dim:#00bb66;--purple:#9d4edd;--red:#ff4466;--yellow:#ffcc00;--text:#c8d8f0;--text-dim:#6a82a0;--font-mono:'Courier New',Courier,monospace;--font-sans:'Segoe UI',system-ui,sans-serif}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-sans);line-height:1.6;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,14,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+    .nav-brand{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--cyan);text-decoration:none;letter-spacing:2px;text-shadow:0 0 12px rgba(0,212,255,0.5)}
+    .nav-links{display:flex;gap:1.5rem;list-style:none}
+    .nav-links a{color:var(--text-dim);text-decoration:none;font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}
+    .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+    .page-hero{position:relative;z-index:1;text-align:center;padding:5rem 2rem 3rem}
+    .section-label{font-family:var(--font-mono);font-size:0.75rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:0.6rem}
+    h1{font-family:var(--font-mono);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:0.75rem}
+    .hero-desc{max-width:680px;margin:0 auto;color:var(--text-dim);font-size:0.95rem;line-height:1.8}
+    section{position:relative;z-index:1;padding:3rem 2rem;max-width:960px;margin:0 auto}
+
+    .progress-overview{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:3rem;justify-content:center}
+    .ov-stat{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1rem 1.5rem;text-align:center;min-width:120px}
+    .ov-num{font-family:var(--font-mono);font-size:1.8rem;font-weight:700;line-height:1}
+    .ov-num.cyan{color:var(--cyan);text-shadow:0 0 10px rgba(0,212,255,0.3)}
+    .ov-num.green{color:var(--green);text-shadow:0 0 10px rgba(0,255,136,0.3)}
+    .ov-num.yellow{color:var(--yellow)}
+    .ov-label{font-size:0.72rem;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:0.3rem}
+
+    .timeline{position:relative;padding-left:2rem}
+    .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--green),var(--cyan),var(--purple),var(--border))}
+
+    .phase{position:relative;margin-bottom:2.5rem}
+    .phase::before{content:'';position:absolute;left:-2.4rem;top:1.2rem;width:14px;height:14px;border-radius:50%;border:2px solid;background:var(--bg)}
+    .phase.done::before{border-color:var(--green);background:var(--green);box-shadow:0 0 8px var(--green)}
+    .phase.active::before{border-color:var(--cyan);background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:blink 1.5s infinite}
+    .phase.planned::before{border-color:var(--border);background:var(--bg3)}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+
+    .phase-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1.5rem;transition:border-color 0.2s}
+    .phase.done .phase-card{border-color:rgba(0,255,136,0.2)}
+    .phase.active .phase-card{border-color:rgba(0,212,255,0.25);box-shadow:0 0 20px rgba(0,212,255,0.05)}
+    .phase-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;flex-wrap:wrap}
+    .phase-num{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:1px;min-width:80px}
+    .phase-title{font-family:var(--font-mono);font-size:1rem;color:#fff;font-weight:700;flex:1}
+    .badge{display:inline-block;padding:2px 10px;border-radius:2px;font-family:var(--font-mono);font-size:0.68rem;border:1px solid;letter-spacing:1px}
+    .badge.done{border-color:var(--green);color:var(--green);background:rgba(0,255,136,0.08)}
+    .badge.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,0.08)}
+    .badge.planned{border-color:var(--border);color:var(--text-dim)}
+    .phase-tests{font-family:var(--font-mono);font-size:0.75rem;color:var(--green);margin-bottom:0.75rem}
+    .phase-desc{font-size:0.875rem;color:var(--text-dim);line-height:1.7;margin-bottom:0.75rem}
+    .feature-list{display:flex;flex-wrap:wrap;gap:0.4rem}
+    .feat-tag{font-family:var(--font-mono);font-size:0.7rem;padding:2px 8px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:2px;color:var(--text-dim)}
+    .feat-tag.done{border-color:rgba(0,255,136,0.2);color:rgba(0,255,136,0.7)}
+    .feat-tag.active{border-color:rgba(0,212,255,0.2);color:rgba(0,212,255,0.7)}
+
+    footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center}
+    .footer-brand{font-family:var(--font-mono);font-size:1.2rem;color:var(--cyan);letter-spacing:4px;text-shadow:0 0 12px rgba(0,212,255,0.3);margin-bottom:0.4rem}
+    .footer-links{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin:0.75rem 0}
+    .footer-links a{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;transition:color 0.2s}
+    .footer-links a:hover{color:var(--cyan)}
+    .footer-copy{font-size:0.72rem;color:var(--text-dim);opacity:0.5}
+    @media(max-width:640px){.nav-links{display:none}.timeline{padding-left:1.25rem}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">⚡ CYBERFLASH</a>
+  <ul class="nav-links">
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="screenshots.html">Screenshots</a></li>
+    <li><a href="roadmap.html" class="active">Roadmap</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="section-label">// development roadmap</div>
+  <h1>21-Phase Roadmap</h1>
+  <p class="hero-desc">
+    CyberFlash is built in 21 development phases, each adding a complete, tested, production-ready layer.
+    Phases 0–6 are fully complete with 622+ passing tests.
+    Phase 7 is actively in development.
+  </p>
+</div>
+
+<section>
+
+  <div class="progress-overview">
+    <div class="ov-stat"><div class="ov-num green">6</div><div class="ov-label">Phases Complete</div></div>
+    <div class="ov-stat"><div class="ov-num cyan">1</div><div class="ov-label">Active Phase</div></div>
+    <div class="ov-stat"><div class="ov-num" style="color:var(--text-dim)">14</div><div class="ov-label">Planned Phases</div></div>
+    <div class="ov-stat"><div class="ov-num green">622+</div><div class="ov-label">Tests Passing</div></div>
+    <div class="ov-stat"><div class="ov-num cyan">195+</div><div class="ov-label">Features Planned</div></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="phase done">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 0</span>
+          <span class="phase-title">Project Scaffold</span>
+          <span class="badge done">✓ COMPLETE</span>
+        </div>
+        <div class="phase-tests">Tests: included in Phase 1–2 baseline</div>
+        <div class="phase-desc">Full package structure, CI matrix, device profile schema, udev rules, QApplication test fixture, MIT license, pyproject.toml with all production dependencies.</div>
+        <div class="feature-list">
+          <span class="feat-tag done">pyproject.toml</span><span class="feat-tag done">GitHub Actions CI</span><span class="feat-tag done">pytest-qt fixture</span><span class="feat-tag done">udev rules</span><span class="feat-tag done">profile schema</span><span class="feat-tag done">CLAUDE.md</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase done">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 1</span>
+          <span class="phase-title">Theme System &amp; UI Scaffold</span>
+          <span class="badge done">✓ COMPLETE</span>
+        </div>
+        <div class="phase-desc">ThemePalette dataclasses for cyber_dark/light/green, ThemeEngine with QSS token substitution, frameless main window, sidebar navigation, core widgets (CyberCard, StepTracker, CyberBadge).</div>
+        <div class="feature-list">
+          <span class="feat-tag done">ThemeEngine</span><span class="feat-tag done">3 theme palettes</span><span class="feat-tag done">QSS tokens</span><span class="feat-tag done">FramelessMainWindow</span><span class="feat-tag done">Sidebar</span><span class="feat-tag done">CyberCard</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase done">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 2</span>
+          <span class="phase-title">Flash Engine &amp; Device Detection</span>
+          <span class="badge done">✓ COMPLETE</span>
+        </div>
+        <div class="phase-tests">Tests: test_flash_engine_dry_run, test_device_model</div>
+        <div class="phase-desc">Full fastboot flash orchestrator with dry-run mode, A/B slot management, vbmeta patching, wipe operations. ADB + fastboot hot-plug polling via DeviceService. Real-time ANSI log panel.</div>
+        <div class="feature-list">
+          <span class="feat-tag done">FlashEngine</span><span class="feat-tag done">dry-run mode</span><span class="feat-tag done">A/B slots</span><span class="feat-tag done">vbmeta patch</span><span class="feat-tag done">DeviceService</span><span class="feat-tag done">hot-plug poll</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase done">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 3</span>
+          <span class="phase-title">Root Management</span>
+          <span class="badge done">✓ COMPLETE</span>
+        </div>
+        <div class="phase-tests">Tests: 20 (root_manager) + 13 (payload_dumper)</div>
+        <div class="phase-desc">Magisk / KernelSU / APatch detection and boot image patching workflow. Module list management. Inline protobuf OTA payload.bin extractor with zero extra dependencies.</div>
+        <div class="feature-list">
+          <span class="feat-tag done">Magisk detect</span><span class="feat-tag done">KernelSU detect</span><span class="feat-tag done">APatch detect</span><span class="feat-tag done">boot patch workflow</span><span class="feat-tag done">payload.bin extractor</span><span class="feat-tag done">module mgmt</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase done">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 4 + ROM</span>
+          <span class="phase-title">Diagnostics, Backup &amp; ROM Downloads</span>
+          <span class="badge done">✓ COMPLETE — 342 tests</span>
+        </div>
+        <div class="phase-tests">Tests: +61 new (diagnostics, backup, downloads, hash, ROM manager)</div>
+        <div class="phase-desc">31-command ADB diagnostic suite, streaming logcat worker, full backup modes. Resumable chunked downloader with SHA-256 verification, ROM source trust scoring, download history persistence.</div>
+        <div class="feature-list">
+          <span class="feat-tag done">31 ADB checks</span><span class="feat-tag done">logcat stream</span><span class="feat-tag done">backup worker</span><span class="feat-tag done">chunked download</span><span class="feat-tag done">SHA-256 verify</span><span class="feat-tag done">trust scoring</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase done">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 5</span>
+          <span class="phase-title">Multi-Brand Flash Support</span>
+          <span class="badge done">✓ COMPLETE — 471 tests</span>
+        </div>
+        <div class="phase-tests">Tests: +129 new (heimdall, xiaomi, pixel, motorola × 4 managers)</div>
+        <div class="phase-desc">Native brand-specific flash engines for Samsung (Heimdall + PIT), Xiaomi (MIUI/HyperOS + ARB), Google Pixel (factory images), Motorola (RSA rescue). 4-step first-run device wizard.</div>
+        <div class="feature-list">
+          <span class="feat-tag done">Heimdall</span><span class="feat-tag done">PIT parser</span><span class="feat-tag done">MIUI unlock</span><span class="feat-tag done">ARB check</span><span class="feat-tag done">Pixel factory</span><span class="feat-tag done">Motorola rescue</span><span class="feat-tag done">EDL</span><span class="feat-tag done">device wizard</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase done">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 6</span>
+          <span class="phase-title">Advanced Root &amp; Security</span>
+          <span class="badge done">✓ COMPLETE — 622 tests</span>
+        </div>
+        <div class="phase-tests">Tests: +151 new (root_phase6, kernel, token_vault, boot_anim, integrity)</div>
+        <div class="phase-desc">KernelSU module system, Play Integrity 3-tier checker, AnyKernel3 flash with rollback, AES-256-GCM Token Vault with keychain, boot animation manager, banking-safe DenyList preset.</div>
+        <div class="feature-list">
+          <span class="feat-tag done">KernelSU modules</span><span class="feat-tag done">Play Integrity</span><span class="feat-tag done">AnyKernel3</span><span class="feat-tag done">Token Vault</span><span class="feat-tag done">AES-256-GCM</span><span class="feat-tag done">boot animation</span><span class="feat-tag done">DenyList</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase active">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 7</span>
+          <span class="phase-title">ROM Intelligence &amp; Wireless</span>
+          <span class="badge active">● ACTIVE</span>
+        </div>
+        <div class="phase-tests">Target: 900+ tests</div>
+        <div class="phase-desc">ROM feed aggregation, rich metadata tagging, flash journal with rollback, wireless ADB pairing (Android 11+), AI health scoring, security auditor, boot inspector, crash service, update service.</div>
+        <div class="feature-list">
+          <span class="feat-tag active">ROM feed</span><span class="feat-tag active">metadata</span><span class="feat-tag active">flash journal</span><span class="feat-tag active">wireless ADB</span><span class="feat-tag active">health scoring</span><span class="feat-tag active">security audit</span><span class="feat-tag active">crash service</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 8</span>
+          <span class="phase-title">App &amp; File Manager</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">APK installer, extractor, and batch operation support. Full device file browser with drag-and-drop transfers. Package manager UI with app info, permissions view, and uninstall.</div>
+        <div class="feature-list">
+          <span class="feat-tag">APK installer</span><span class="feat-tag">APK extractor</span><span class="feat-tag">file browser</span><span class="feat-tag">drag-and-drop</span><span class="feat-tag">permissions viewer</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 9</span>
+          <span class="phase-title">Screen Mirror &amp; Input</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">scrcpy integration for live screen mirroring and recording. Screenshot capture with annotation. Input macro recorder for automation testing. Device control without touching the phone.</div>
+        <div class="feature-list">
+          <span class="feat-tag">scrcpy</span><span class="feat-tag">screen record</span><span class="feat-tag">screenshot</span><span class="feat-tag">input macros</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 10</span>
+          <span class="phase-title">Workflow Builder &amp; Automation</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">Visual drag-and-drop flash workflow editor (replaces FlashFire). Batch device operations for multi-device setups. Automation script runner with ADB command chaining and conditional logic.</div>
+        <div class="feature-list">
+          <span class="feat-tag">workflow editor</span><span class="feat-tag">batch ops</span><span class="feat-tag">script runner</span><span class="feat-tag">ADB chaining</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 11</span>
+          <span class="phase-title">Plugin System</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">Community plugin API with sandboxed execution. Plugin discovery and marketplace integration. Allow the community to extend CyberFlash without modifying the core codebase.</div>
+        <div class="feature-list">
+          <span class="feat-tag">plugin API</span><span class="feat-tag">sandboxing</span><span class="feat-tag">marketplace</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 12</span>
+          <span class="phase-title">Kali NetHunter Integration</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">Full Kali NetHunter installer workflow, kernel selection matrix, chroot environment management, HID attack profile configuration. Designed for security researchers and penetration testers.</div>
+        <div class="feature-list">
+          <span class="feat-tag">NetHunter installer</span><span class="feat-tag">kernel select</span><span class="feat-tag">chroot mgmt</span><span class="feat-tag">HID profiles</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 13</span>
+          <span class="phase-title">Partition Editor</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">Interactive partition table viewer and editor. Resize, create, delete, and backup individual partitions. GPT and MBR support. Safety guards to prevent accidental critical partition deletion.</div>
+        <div class="feature-list">
+          <span class="feat-tag">partition viewer</span><span class="feat-tag">resize</span><span class="feat-tag">backup</span><span class="feat-tag">GPT/MBR</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 14</span>
+          <span class="phase-title">GSI &amp; Treble Checker</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">Project Treble compatibility checker, GSI image compatibility validation, vendor interface (VINTF) manifest analysis. Determine if a GSI ROM will work before you flash it.</div>
+        <div class="feature-list">
+          <span class="feat-tag">Treble check</span><span class="feat-tag">GSI compat</span><span class="feat-tag">VINTF analysis</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase planned">
+      <div class="phase-card">
+        <div class="phase-header">
+          <span class="phase-num">PHASE 15–21</span>
+          <span class="phase-title">Benchmark · Privacy · Wipe · Contacts · AI Deep Integration</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <div class="phase-desc">Benchmark runner suite, privacy scanner (permission audit), secure wiper (DoD-grade), contacts manager (vCard), prop editor enhancements, full Gemini AI integration, and community-requested features.</div>
+        <div class="feature-list">
+          <span class="feat-tag">benchmark</span><span class="feat-tag">privacy scan</span><span class="feat-tag">secure wipe</span><span class="feat-tag">contacts</span><span class="feat-tag">prop editor</span><span class="feat-tag">AI deep</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">⚡ CYBERFLASH</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="screenshots.html">Screenshots</a>
+    <a href="changelog.html">Changelog</a>
+    <a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a>
+  </div>
+  <div class="footer-copy">MIT License · &copy; 2026 Lchtangen &amp; Contributors</div>
+</footer>
+
+</body>
+</html>

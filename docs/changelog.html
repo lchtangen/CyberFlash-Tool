@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Changelog — CyberFlash Tool</title>
+  <style>
+    :root{--bg:#0a0e1a;--bg2:#0f1525;--bg3:#151d30;--border:#1e2d4a;--cyan:#00d4ff;--cyan-dim:#0099bb;--green:#00ff88;--green-dim:#00bb66;--purple:#9d4edd;--red:#ff4466;--yellow:#ffcc00;--text:#c8d8f0;--text-dim:#6a82a0;--font-mono:'Courier New',Courier,monospace;--font-sans:'Segoe UI',system-ui,sans-serif}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-sans);line-height:1.6;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,14,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+    .nav-brand{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--cyan);text-decoration:none;letter-spacing:2px;text-shadow:0 0 12px rgba(0,212,255,0.5)}
+    .nav-links{display:flex;gap:1.5rem;list-style:none}
+    .nav-links a{color:var(--text-dim);text-decoration:none;font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}
+    .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+    .page-hero{position:relative;z-index:1;text-align:center;padding:5rem 2rem 3rem}
+    .section-label{font-family:var(--font-mono);font-size:0.75rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:0.6rem}
+    h1{font-family:var(--font-mono);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:0.75rem}
+    .hero-desc{max-width:600px;margin:0 auto;color:var(--text-dim);font-size:0.95rem}
+    section{position:relative;z-index:1;padding:3rem 2rem;max-width:900px;margin:0 auto}
+
+    .entry{margin-bottom:3rem}
+    .entry-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+    .entry-phase{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:1px;background:var(--bg3);padding:2px 10px;border-radius:2px;border:1px solid var(--border)}
+    .entry-title{font-family:var(--font-mono);font-size:1.1rem;color:#fff;font-weight:700}
+    .entry-date{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim)}
+    .entry-tests{font-family:var(--font-mono);font-size:0.78rem;color:var(--green);background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.15);padding:2px 10px;border-radius:2px;margin-left:auto}
+
+    .change-group{margin-bottom:1rem}
+    .change-group-title{font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem}
+    .change-group-title::after{content:'';flex:1;height:1px;background:var(--border)}
+    .change-list{list-style:none;display:flex;flex-direction:column;gap:0.35rem}
+    .change-list li{font-size:0.875rem;color:var(--text-dim);padding-left:1.25rem;position:relative;line-height:1.6}
+    .change-list li::before{content:'→';position:absolute;left:0;color:var(--cyan);font-family:var(--font-mono);font-size:0.75rem}
+    .change-list li code{font-family:var(--font-mono);font-size:0.8rem;color:var(--cyan);background:rgba(0,212,255,0.07);padding:0 4px;border-radius:2px}
+    .change-list li strong{color:var(--text)}
+
+    .divider{position:relative;z-index:1;height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);max-width:900px;margin:0 auto}
+
+    footer{position:relative;z-index:1;background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center}
+    .footer-brand{font-family:var(--font-mono);font-size:1.2rem;color:var(--cyan);letter-spacing:4px;text-shadow:0 0 12px rgba(0,212,255,0.3);margin-bottom:0.4rem}
+    .footer-links{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin:0.75rem 0}
+    .footer-links a{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;transition:color 0.2s}
+    .footer-links a:hover{color:var(--cyan)}
+    .footer-copy{font-size:0.72rem;color:var(--text-dim);opacity:0.5}
+    @media(max-width:640px){.nav-links{display:none}.entry-tests{margin-left:0}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">⚡ CYBERFLASH</a>
+  <ul class="nav-links">
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="screenshots.html">Screenshots</a></li>
+    <li><a href="roadmap.html">Roadmap</a></li>
+    <li><a href="changelog.html" class="active">Changelog</a></li>
+    <li><a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="section-label">// release history</div>
+  <h1>Changelog</h1>
+  <p class="hero-desc">Every feature added, phase by phase. All changes are fully tested before merge — no partial releases.</p>
+</div>
+
+<section>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-phase">PHASE 6</span>
+      <span class="entry-title">Advanced Root &amp; Security</span>
+      <span class="entry-date">2026-02-25</span>
+      <span class="entry-tests">622 tests passing</span>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">Root Manager Extensions</div>
+      <ul class="change-list">
+        <li><code>core/root_manager.py</code> — KernelSU module management: list, install, remove, enable/disable</li>
+        <li><code>core/root_manager.py</code> — Root profiles system with per-device saved configuration</li>
+        <li><code>core/root_manager.py</code> — Superuser access log reader and export</li>
+        <li><code>core/root_manager.py</code> — dm-verity toggle and force-encryption disable/enable</li>
+        <li><code>core/root_manager.py</code> — Magisk Root Hide / DenyList manager with app-level granularity</li>
+        <li><code>core/root_manager.py</code> — <strong>Banking-safe preset</strong>: one-click DenyList configuration for financial apps</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">Integrity &amp; Security</div>
+      <ul class="change-list">
+        <li><code>workers/integrity_worker.py</code> — Play Integrity / SafetyNet 3-tier verification: BASIC / DEVICE / STRONG</li>
+        <li><code>workers/integrity_worker.py</code> — Per-check history logging to JSON file with timestamps</li>
+        <li><code>core/token_vault.py</code> — AES-256-GCM encrypted credential storage</li>
+        <li><code>core/token_vault.py</code> — OS keychain integration via <code>keyring</code> library</li>
+        <li><code>core/token_vault.py</code> — PBKDF2-HMAC-SHA256 key derivation for master password</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">Kernel &amp; Boot</div>
+      <ul class="change-list">
+        <li><code>core/kernel_manager.py</code> — AnyKernel3 flash via ADB sideload and direct ADB push methods</li>
+        <li><code>core/kernel_manager.py</code> — Boot image backup before kernel flash with SHA-256 fingerprint</li>
+        <li><code>core/kernel_manager.py</code> — One-click rollback to backed-up boot image via fastboot</li>
+        <li><code>core/kernel_manager.py</code> — Kernel version verification after flash (uname -r comparison)</li>
+        <li><code>core/boot_animation_manager.py</code> — <code>bootanimation.zip</code> parse, validate, install, backup, reset</li>
+        <li><code>core/boot_animation_manager.py</code> — Frame-by-frame extraction for preview and inspection</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">UI</div>
+      <ul class="change-list">
+        <li><code>ui/pages/magisk_modules_page.py</code> — Magisk module repository browser with search and filter</li>
+        <li><code>ui/pages/magisk_modules_page.py</code> — Install from ZIP and from online repo with install worker</li>
+        <li><code>ui/pages/dashboard_page.py</code> — 3D hero phone pixmap via <code>get_hero_phone_pixmap()</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="entry" style="margin-top:3rem">
+    <div class="entry-header">
+      <span class="entry-phase">PHASE 5</span>
+      <span class="entry-title">Multi-Brand Flash Support</span>
+      <span class="entry-date">2026-02-24</span>
+      <span class="entry-tests">471 tests passing</span>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">Brand-Specific Engines</div>
+      <ul class="change-list">
+        <li><code>core/heimdall_manager.py</code> — Samsung flash via Heimdall: PIT file parser, TAR partition flash, repartition support</li>
+        <li><code>core/xiaomi_manager.py</code> — MIUI/HyperOS: fastboot flash sequences, Anti-Rollback (ARB) check, bootloader unlock workflow</li>
+        <li><code>core/pixel_manager.py</code> — Google Pixel factory image flash, bootloader + radio update, OTA sideload via ADB</li>
+        <li><code>core/motorola_manager.py</code> — Motorola RSA rescue via <code>flashfile.xml</code>, firmware directory flash, unlock code submission</li>
+        <li><code>core/edl_manager.py</code> — EDL (Emergency Download Mode) engine for Qualcomm devices</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">UI</div>
+      <ul class="change-list">
+        <li><code>ui/dialogs/device_wizard.py</code> — 4-step first-run wizard with brand detection, setup guides, and profile check worker</li>
+        <li>All 7 page stubs received <code>setObjectName("pageRoot")</code> for transparent cyberpunk background</li>
+        <li><code>ui/main_window.py</code> — <code>_CyberCentralWidget</code>: dot grid, trace lines, corner brackets, gradient overlay</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="entry" style="margin-top:3rem">
+    <div class="entry-header">
+      <span class="entry-phase">PHASE 4 + ROM</span>
+      <span class="entry-title">Diagnostics, Backup &amp; ROM Downloads</span>
+      <span class="entry-date">2026-02-20</span>
+      <span class="entry-tests">342 tests passing</span>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">Diagnostics</div>
+      <ul class="change-list">
+        <li><code>workers/diagnostics_worker.py</code> — 31 ADB diagnostic commands across 6 categories: device info, storage, network, security, performance, logs</li>
+        <li><code>workers/diagnostics_worker.py</code> — Typed <code>result_ready(category, key, value)</code> signal for UI binding</li>
+        <li><code>workers/adb_log_worker.py</code> — Streaming logcat via <code>QProcess</code>, priority filter V/D/I/W/E/F/S, clean stop on <code>QueuedConnection</code></li>
+        <li><code>ui/pages/diagnostics_page.py</code> — Live logcat panel, device health card, 31-check results grid</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">Backup</div>
+      <ul class="change-list">
+        <li><code>workers/backup_worker.py</code> — <code>adb_backup</code> mode: full app + data backup via Android's ADB backup protocol</li>
+        <li><code>workers/backup_worker.py</code> — <code>pull_media</code> mode: bulk media pull from <code>/sdcard/</code> with progress reporting</li>
+        <li><code>workers/backup_worker.py</code> — Thread-safe abort flag for immediate cancellation</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <div class="change-group-title">ROM Downloads</div>
+      <ul class="change-list">
+        <li><code>workers/download_worker.py</code> — Resumable chunked HTTP/HTTPS download with <code>Range</code> header support</li>
+        <li><code>workers/download_worker.py</code> — Integrated SHA-256 post-download verification via <code>HashWorker</code></li>
+        <li><code>workers/hash_worker.py</code> — Background file checksum worker: SHA-256, MD5, SHA-1</li>
+        <li><code>core/rom_manager.py</code> — <code>DownloadRecord</code> dataclass with state machine (<code>DownloadState</code>)</li>
+        <li><code>core/rom_manager.py</code> — JSON flat-file download history with cross-session persistence</li>
+        <li><code>ui/pages/rom_library_page.py</code> — Per-source progress panel, speed display, already-downloaded detection, cancel button</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="entry" style="margin-top:3rem">
+    <div class="entry-header">
+      <span class="entry-phase">PHASE 3</span>
+      <span class="entry-title">Root Management</span>
+      <span class="entry-date">2026-02-15</span>
+      <span class="entry-tests">~250 tests passing</span>
+    </div>
+    <div class="change-group">
+      <div class="change-group-title">Added</div>
+      <ul class="change-list">
+        <li><code>core/root_manager.py</code> — Detect Magisk, KernelSU, APatch root state automatically on device connect</li>
+        <li><code>core/root_manager.py</code> — Boot image patch workflow: push boot → launch patch app → poll result → pull patched → flash via fastboot</li>
+        <li><code>core/root_manager.py</code> — Magisk module list, install from ZIP, uninstall, enable/disable</li>
+        <li><code>core/payload_dumper.py</code> — OTA <code>payload.bin</code> extractor: inline protobuf parser, zero external dependencies</li>
+        <li><code>ui/pages/root_page.py</code> — Fully wired with inline <code>_RootWorker</code>, auto-detect root on device connect signal</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="entry" style="margin-top:3rem">
+    <div class="entry-header">
+      <span class="entry-phase">PHASE 0–2</span>
+      <span class="entry-title">Scaffold, Themes &amp; Flash Engine</span>
+      <span class="entry-date">2026-02-01 – 2026-02-10</span>
+      <span class="entry-tests">~180 tests passing</span>
+    </div>
+    <div class="change-group">
+      <div class="change-group-title">Foundation</div>
+      <ul class="change-list">
+        <li>Full Python package structure: <code>core/</code>, <code>workers/</code>, <code>services/</code>, <code>ui/</code>, <code>models/</code>, <code>utils/</code></li>
+        <li><code>ThemeEngine</code> with QSS <code>{TOKEN}</code> substitution, 3 built-in palettes (<code>cyber_dark</code>, <code>cyber_light</code>, <code>cyber_green</code>)</li>
+        <li><code>FramelessMainWindow</code> with <code>_CyberCentralWidget</code>: dot grid background, trace lines, corner brackets</li>
+        <li><code>FlashEngine</code>: sequential flash orchestrator, dry-run mode, <code>log_cb</code> callback, never raises</li>
+        <li><code>DeviceService</code>: hot-plug ADB + fastboot polling with <code>device_list_updated</code> signal</li>
+        <li>OnePlus 7 Pro <code>guacamole</code> device profile (A/B, fastboot method)</li>
+        <li>GitHub Actions CI matrix: Linux · macOS · Windows</li>
+        <li>pytest-qt <code>qapp</code> session-scoped fixture in <code>conftest.py</code></li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <div class="footer-brand">⚡ CYBERFLASH</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="screenshots.html">Screenshots</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a>
+  </div>
+  <div class="footer-copy">MIT License · &copy; 2026 Lchtangen &amp; Contributors</div>
+</footer>
+
+</body>
+</html>
