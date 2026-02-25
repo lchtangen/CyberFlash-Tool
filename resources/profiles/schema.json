@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CyberFlash Device Profile",
+  "type": "object",
+  "required": ["codename", "name", "brand", "model", "ab_slots", "bootloader", "flash", "wipe_partitions"],
+  "properties": {
+    "codename": {
+      "type": "string",
+      "description": "Device codename (ro.product.device), e.g. 'guacamole'"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable device name, e.g. 'OnePlus 7 Pro'"
+    },
+    "brand": {
+      "type": "string",
+      "description": "Device manufacturer, e.g. 'OnePlus'"
+    },
+    "model": {
+      "type": "string",
+      "description": "Model number, e.g. 'GM1917'"
+    },
+    "chipset": {
+      "type": "string",
+      "description": "SoC codename, e.g. 'Snapdragon 855'"
+    },
+    "ab_slots": {
+      "type": "boolean",
+      "description": "True if the device uses A/B partition slots"
+    },
+    "bootloader": {
+      "type": "object",
+      "required": ["unlock_command", "requires_oem_unlock_menu", "warn_data_wipe"],
+      "properties": {
+        "unlock_command": {
+          "type": "string",
+          "description": "Fastboot command to unlock the bootloader"
+        },
+        "requires_oem_unlock_menu": {
+          "type": "boolean",
+          "description": "True if OEM Unlock must be enabled in developer settings first"
+        },
+        "warn_data_wipe": {
+          "type": "boolean",
+          "description": "True if unlocking will wipe user data"
+        }
+      },
+      "additionalProperties": false
+    },
+    "flash": {
+      "type": "object",
+      "required": ["method", "partitions"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["fastboot", "sideload"],
+          "description": "Primary flash method"
+        },
+        "partitions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered list of partitions to flash via fastboot"
+        },
+        "vbmeta_partition": {
+          "type": "string",
+          "default": "vbmeta",
+          "description": "Partition name for vbmeta image"
+        },
+        "vbmeta_disable_flags": {
+          "type": "string",
+          "description": "Extra flags passed when flashing vbmeta to disable verification"
+        }
+      },
+      "additionalProperties": false
+    },
+    "recoveries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "filename_pattern", "flash_partition"],
+        "properties": {
+          "name": { "type": "string" },
+          "filename_pattern": { "type": "string" },
+          "flash_partition": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "description": "Known custom recovery images for this device"
+    },
+    "wipe_partitions": {
+      "type": "object",
+      "description": "Map of wipe label to fastboot partition (or null for ADB-based wipe)",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "null" }
+        ]
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form usage notes displayed to the user"
+    },
+    "edl": {
+      "type": "object",
+      "description": "EDL (Emergency Download) rescue configuration for Qualcomm devices",
+      "properties": {
+        "vid": {"type": "string", "description": "USB Vendor ID, e.g. '05C6'"},
+        "pid": {"type": "string", "description": "USB Product ID, e.g. '9008'"},
+        "programmer_filename": {"type": "string", "description": "Firehose programmer .elf filename"},
+        "msm_package_url": {"type": "string", "description": "URL to download the MSM firmware package"},
+        "edl_entry_methods": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Human-readable steps to enter EDL mode on this device"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

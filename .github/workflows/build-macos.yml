@@ -1,0 +1,38 @@
+name: Build macOS
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependencies
+        run: pip install -e . pyinstaller
+
+      - name: Build with PyInstaller
+        run: pyinstaller packaging/cyberflash.spec
+
+      - name: Create DMG
+        run: |
+          hdiutil create -volname "CyberFlash" \
+            -srcfolder dist/CyberFlash \
+            -ov -format UDZO \
+            dist/CyberFlash-macos.dmg
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CyberFlash-macos
+          path: dist/CyberFlash-macos.dmg
+          retention-days: 30

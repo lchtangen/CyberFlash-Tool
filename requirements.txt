@@ -1,0 +1,6 @@
+PySide6>=6.7.0
+qt-material>=2.14.0
+adbutils>=2.12.0
+requests>=2.31.0
+packaging>=23.0
+edl>=3.1

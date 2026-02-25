@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Lightning bolt / flash icon for CyberFlash -->
+  <rect width="64" height="64" rx="12" fill="#0d1117"/>
+  <polygon
+    points="38,4 18,36 28,36 26,60 46,28 36,28"
+    fill="#00d4ff"
+    stroke="#33ddff"
+    stroke-width="1"
+    stroke-linejoin="round"
+  />
+</svg>
