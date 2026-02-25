@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CyberFlash — The definitive open-source, AI-powered Android ROM flashing and device management desktop tool. Flash ROMs, manage root, run diagnostics, and more — all in one cyberpunk-themed app." />
+  <meta property="og:title" content="CyberFlash — Android ROM Flashing Tool" />
+  <meta property="og:description" content="Open-source, AI-powered, cross-platform Android device management. Replace every fragmented tool with one professional desktop app." />
+  <meta property="og:type" content="website" />
+  <title>CyberFlash — Android ROM Flashing &amp; Device Management</title>
+  <style>
+    :root {
+      --bg:        #0a0e1a;
+      --bg2:       #0f1525;
+      --bg3:       #151d30;
+      --border:    #1e2d4a;
+      --cyan:      #00d4ff;
+      --cyan-dim:  #0099bb;
+      --green:     #00ff88;
+      --green-dim: #00bb66;
+      --purple:    #9d4edd;
+      --purple-dim:#7b3ab5;
+      --red:       #ff4466;
+      --yellow:    #ffcc00;
+      --text:      #c8d8f0;
+      --text-dim:  #6a82a0;
+      --font-mono: 'Courier New', Courier, monospace;
+      --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,14,26,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cyan);
+      text-decoration: none;
+      letter-spacing: 2px;
+      text-shadow: 0 0 12px rgba(0,212,255,0.5);
+    }
+
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      pointer-events: none;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 2px;
+      border: 1px solid;
+      letter-spacing: 1px;
+    }
+    .badge-cyan   { border-color: var(--cyan);   color: var(--cyan);   background: rgba(0,212,255,0.08); }
+    .badge-green  { border-color: var(--green);  color: var(--green);  background: rgba(0,255,136,0.07); }
+    .badge-purple { border-color: var(--purple); color: var(--purple); background: rgba(157,78,221,0.08);}
+    .badge-yellow { border-color: var(--yellow); color: var(--yellow); background: rgba(255,204,0,0.07); }
+
+    h1 {
+      font-family: var(--font-mono);
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      line-height: 1.1;
+      color: var(--cyan);
+      text-shadow: 0 0 30px rgba(0,212,255,0.4), 0 0 60px rgba(0,212,255,0.15);
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-sub {
+      font-family: var(--font-mono);
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      color: var(--green);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 12px rgba(0,255,136,0.3);
+    }
+
+    .hero-desc {
+      max-width: 720px;
+      font-size: 1.1rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-desc strong { color: var(--cyan); }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: var(--bg);
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(0,212,255,0.35);
+    }
+    .btn-primary:hover {
+      background: #33ddff;
+      box-shadow: 0 0 30px rgba(0,212,255,0.6);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+    }
+    .btn-outline:hover {
+      background: rgba(0,212,255,0.1);
+      box-shadow: 0 0 16px rgba(0,212,255,0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-green {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--green);
+    }
+    .btn-green:hover {
+      background: rgba(0,255,136,0.1);
+      box-shadow: 0 0 16px rgba(0,255,136,0.2);
+      transform: translateY(-1px);
+    }
+
+    /* ── STATS ROW ── */
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+
+    .stat {
+      text-align: center;
+      min-width: 120px;
+    }
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--cyan);
+      text-shadow: 0 0 12px rgba(0,212,255,0.4);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    h2 {
+      font-family: var(--font-mono);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    .section-intro {
+      max-width: 700px;
+      color: var(--text-dim);
+      font-size: 1rem;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      border-color: var(--cyan-dim);
+      box-shadow: 0 0 20px rgba(0,212,255,0.08);
+    }
+
+    .feature-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* ── REPLACES TABLE ── */
+    .replaces-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .replace-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+    }
+
+    .replace-old {
+      font-family: var(--font-mono);
+      color: var(--red);
+      min-width: 140px;
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+
+    .replace-arrow { color: var(--text-dim); }
+
+    .replace-new {
+      font-family: var(--font-mono);
+      color: var(--green);
+    }
+
+    /* ── TECH STACK ── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .tech-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .tech-card:hover { border-color: var(--purple-dim); }
+
+    .tech-card .tech-name {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--purple);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .tech-card .tech-desc {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    /* ── ARCHITECTURE DIAGRAM ── */
+    .arch-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .arch-layer {
+      display: flex;
+      align-items: center;
+      border: 1px solid;
+      border-radius: 3px;
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 0.4rem;
+      gap: 1rem;
+    }
+    .arch-layer:last-child { margin-bottom: 0; }
+
+    .arch-layer.l-ui     { border-color: var(--cyan);   color: var(--cyan); }
+    .arch-layer.l-worker { border-color: var(--green);  color: var(--green); }
+    .arch-layer.l-svc    { border-color: var(--yellow); color: var(--yellow);}
+    .arch-layer.l-core   { border-color: var(--purple); color: var(--purple);}
+    .arch-layer.l-model  { border-color: #44aaff;       color: #44aaff; }
+    .arch-layer.l-util   { border-color: var(--text-dim);color: var(--text-dim);}
+
+    .arch-name { font-weight: 700; min-width: 140px; letter-spacing: 1px; }
+    .arch-desc { color: var(--text-dim); font-size: 0.75rem; }
+
+    /* ── INSTALL ── */
+    .code-block {
+      background: #060a14;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--cyan);
+      border-radius: 3px;
+      padding: 1.5rem 1.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+    .code-block .comment { color: var(--text-dim); }
+    .code-block .cmd     { color: var(--green); }
+    .code-block .flag    { color: var(--yellow); }
+
+    /* ── AI SECTION ── */
+    .ai-section {
+      background: linear-gradient(135deg, rgba(157,78,221,0.05) 0%, rgba(0,212,255,0.04) 100%);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-section::before {
+      content: 'AI';
+      position: absolute;
+      right: 1.5rem;
+      top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(157,78,221,0.07);
+      pointer-events: none;
+      letter-spacing: 4px;
+    }
+
+    .ai-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .ai-item {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(157,78,221,0.25);
+      border-radius: 3px;
+      padding: 1rem 1.25rem;
+    }
+
+    .ai-item h4 {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--purple);
+      margin-bottom: 0.4rem;
+      letter-spacing: 1px;
+    }
+
+    .ai-item p {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ── ROADMAP ── */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .roadmap-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .roadmap-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .dot-done    { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot-active  { background: var(--cyan);  box-shadow: 0 0 6px var(--cyan); }
+    .dot-planned { background: var(--text-dim); }
+
+    .roadmap-item h4 {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .roadmap-item p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+
+    /* ── CONTRIBUTING ── */
+    .contrib-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .contrib-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem;
+    }
+
+    .contrib-card h3 {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .contrib-card p {
+      font-size: 0.83rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      color: var(--cyan);
+      letter-spacing: 4px;
+      text-shadow: 0 0 16px rgba(0,212,255,0.4);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-tagline {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--cyan); }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      opacity: 0.5;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+    }
+
+    /* ── FULL-WIDTH STRIPE ── */
+    .stripe {
+      background: var(--bg2);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      section { padding: 3rem 1.25rem; }
+      .hero { padding: 4rem 1.25rem 3rem; }
+    }
+
+    /* ── SCANLINE FLICKER ANIMATION ── */
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 1; }
+      93% { opacity: 0.85; }
+      94% { opacity: 1; }
+    }
+    h1 { animation: flicker 8s infinite; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-brand" href="#">⚡ CYBERFLASH</a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#ai">AI</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="badge-row">
+      <span class="badge badge-green">MIT Open Source</span>
+      <span class="badge badge-cyan">Python 3.12+</span>
+      <span class="badge badge-cyan">PySide6 / Qt 6</span>
+      <span class="badge badge-purple">AI-Powered</span>
+      <span class="badge badge-yellow">Linux · macOS · Windows</span>
+    </div>
+
+    <h1>CYBERFLASH</h1>
+    <div class="hero-sub">Android ROM Flashing &amp; Device Management</div>
+
+    <p class="hero-desc">
+      The <strong>definitive open-source desktop tool</strong> for Android ROM flashing, root management,
+      diagnostics, and device automation — built for power users, developers, and the modding community.
+      Replace 10+ fragmented tools with <strong>one professional cross-platform app</strong>,
+      enhanced with AI-powered analysis, real-time diagnostics, and a cyberpunk desktop experience.
+    </p>
+
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">
+        ⚡ View on GitHub
+      </a>
+      <a class="btn btn-outline" href="#install">
+        ↓ Quick Install
+      </a>
+      <a class="btn btn-green" href="#features">
+        → Explore Features
+      </a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">622+</div>
+      <div class="stat-label">Tests Passing</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">195+</div>
+      <div class="stat-label">Planned Features</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">21</div>
+      <div class="stat-label">Dev Phases</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">6</div>
+      <div class="stat-label">Phases Complete</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Platforms</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">MIT</div>
+      <div class="stat-label">License</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-label">// what it does</div>
+    <h2>Everything in One Place</h2>
+    <p class="section-intro">
+      CyberFlash eliminates the Android modding fragmentation problem. No more switching between
+      five terminals, three GUIs, and a stack of outdated scripts. Every feature you need is built-in,
+      tested, and ready to use.
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3>Flash Engine</h3>
+        <p>Full fastboot and ADB sideload ROM flashing with dry-run mode, step tracker, danger confirmation, and real-time ANSI log output. A/B slot management and vbmeta patching included.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔓</span>
+        <h3>Root Management</h3>
+        <p>Detect and install Magisk, KernelSU, and APatch. Boot image patch workflow, module browser, DenyList manager, dm-verity/force-encryption control, and banking-safe preset.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📦</span>
+        <h3>ROM Library</h3>
+        <p>Curated ROM source browser with AI-powered trust scoring across availability, safety, speed, and reputation. Resumable chunked downloads with SHA-256 verification and history persistence.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔬</span>
+        <h3>Device Diagnostics</h3>
+        <p>31 ADB diagnostic commands across 6 categories. Real-time device health card (battery, temperature, storage, RAM). Streaming logcat with priority filter (V/D/I/W/E/F/S).</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🏢</span>
+        <h3>Multi-Brand Flash</h3>
+        <p>Native support for Samsung (Heimdall/PIT), Xiaomi (MIUI/HyperOS + ARB check), Google Pixel (factory images + OTA), and Motorola (RSA rescue + flashfile.xml). EDL emergency download mode.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💾</span>
+        <h3>Backup &amp; Restore</h3>
+        <p>ADB backup mode and media pull mode with abort support. Full app backup orchestration with progress reporting and background worker threads to keep the UI responsive.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔑</span>
+        <h3>Token Vault</h3>
+        <p>AES-256-GCM encrypted credential storage with OS keychain integration (keyring) and PBKDF2 key derivation. Securely store OEM unlock tokens, API keys, and device passwords.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🛡️</span>
+        <h3>Play Integrity Checker</h3>
+        <p>3-tier Play Integrity / SafetyNet verification (BASIC / DEVICE / STRONG) with history log in JSON. Understand exactly where your device's attestation stands after any modification.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚙️</span>
+        <h3>Kernel Manager</h3>
+        <p>AnyKernel3 flash via sideload or ADB push. Boot image backup and rollback. Kernel version verification after flash. Never get stuck on a bad kernel again.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎨</span>
+        <h3>Boot Animation</h3>
+        <p>Parse, preview, install, backup, and reset bootanimation.zip. Frame extraction for inspection. Personalize your device's boot sequence without any extra tools.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📡</span>
+        <h3>Wireless ADB</h3>
+        <p>Pair and connect via Wi-Fi (Android 11+ TCP pairing). No USB required for day-to-day device management once paired. Connection state persisted across sessions.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🖥️</span>
+        <h3>Payload Extractor</h3>
+        <p>Inline protobuf-based OTA payload.bin extractor with zero external dependencies. Extract individual partition images from any Android OTA update package directly in the app.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPLACES -->
+  <div class="stripe">
+    <section>
+      <div class="section-label">// the competition</div>
+      <h2>Replaces Every Tool You Have</h2>
+      <p class="section-intro">
+        Every tool in the Android modding ecosystem — from Odin to scrcpy — is being replaced by a
+        native CyberFlash module. One install. One UI. One workflow.
+      </p>
+      <div class="replaces-grid">
+        <div class="replace-row">
+          <span class="replace-old">Samsung Odin</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">Heimdall Engine</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">MIUI Unlock Tool</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">Xiaomi Manager</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">MSMDownloadTool</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">EDL Engine</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">Magisk Manager</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">Root Page + Module Browser</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">ROM Manager</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">ROM Library + Download Queue</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">adb / fastboot CLI</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">GUI Wrapper + Terminal</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">scrcpy</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">Screen Mirror (Phase 9)</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">FlashFire</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">Workflow Builder</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">MindTheGapps scripts</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">Extras Installer</span>
+        </div>
+        <div class="replace-row">
+          <span class="replace-old">adbcontrol</span>
+          <span class="replace-arrow">→</span>
+          <span class="replace-new">App + File Manager</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- AI -->
+  <section id="ai">
+    <div class="ai-section">
+      <div class="section-label">// intelligence layer</div>
+      <h2>AI-Powered Features</h2>
+      <p class="section-intro">
+        CyberFlash integrates AI assistance at every layer — from intelligently scoring ROM download
+        sources to analyzing device errors in plain English. The AI features work alongside the tool;
+        they never replace your control.
+      </p>
+
+      <div class="ai-features">
+        <div class="ai-item">
+          <h4>ROM Source Trust Scoring</h4>
+          <p>AI evaluates ROM download sources across four dimensions: Availability, Safety, Download Speed, and Community Reputation. Flags suspicious or dead sources automatically.</p>
+        </div>
+        <div class="ai-item">
+          <h4>Error Analyzer</h4>
+          <p>When a flash or ADB command fails, the AI error analyzer parses the error output and provides a plain-English explanation with suggested next steps — no more Googling cryptic fastboot errors.</p>
+        </div>
+        <div class="ai-item">
+          <h4>AI Assistant Panel</h4>
+          <p>Built-in AI chat assistant wired into the main window. Ask questions about your device, current flash procedure, root status, or any Android modding topic without leaving the app.</p>
+        </div>
+        <div class="ai-item">
+          <h4>Device Health Scoring</h4>
+          <p>AI-driven health scoring combines battery wear, thermal data, storage health, and RAM pressure into a single actionable score with per-metric breakdowns and recommendations.</p>
+        </div>
+        <div class="ai-item">
+          <h4>Gemini Integration</h4>
+          <p>Optional Google Gemini client for enhanced natural language queries. Securely stored via the encrypted Token Vault — your API key never touches plaintext storage.</p>
+        </div>
+        <div class="ai-item">
+          <h4>Security Auditor</h4>
+          <p>AI-assisted security audit of your device configuration: SELinux state, dangerous permissions, developer options exposure, USB debugging state, and network security posture.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <div class="stripe">
+    <section id="architecture">
+      <div class="section-label">// how it's built</div>
+      <h2>Clean Architecture</h2>
+      <p class="section-intro">
+        CyberFlash enforces strict layer boundaries so every module is independently testable.
+        UI never calls ADB directly. Workers never block the main thread. Core logic has zero Qt imports.
+      </p>
+
+      <div class="arch-box">
+        <div class="arch-layer l-ui">
+          <span class="arch-name">ui/</span>
+          <span class="arch-desc">Pages, dialogs, panels, widgets, themes — Qt only. No subprocess or I/O.</span>
+        </div>
+        <div class="arch-layer l-worker">
+          <span class="arch-name">workers/</span>
+          <span class="arch-desc">QObject + moveToThread. Async bridge between UI and core. Signals/slots only.</span>
+        </div>
+        <div class="arch-layer l-svc">
+          <span class="arch-name">services/</span>
+          <span class="arch-desc">Own workers, expose high-level signals to UI. DeviceService, RomLinkService, AIService.</span>
+        </div>
+        <div class="arch-layer l-core">
+          <span class="arch-name">core/</span>
+          <span class="arch-desc">Pure Python. No Qt widget imports. Flash engine, ADB, root, brand managers. Testable in isolation.</span>
+        </div>
+        <div class="arch-layer l-model">
+          <span class="arch-name">models/</span>
+          <span class="arch-desc">Dataclasses only. DeviceProfile, FlashTask, EdlTask, RomSource.</span>
+        </div>
+        <div class="arch-layer l-util">
+          <span class="arch-name">utils/</span>
+          <span class="arch-desc">stdlib + platform helpers. No business logic.</span>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tech-name">Python 3.12+</div>
+          <div class="tech-desc">Type hints · instant debugging · vast ADB ecosystem</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-name">PySide6 / Qt 6</div>
+          <div class="tech-desc">QProcess streaming · QThread workers · LGPL license</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-name">pytest-qt</div>
+          <div class="tech-desc">622+ tests · QApplication fixture · signal testing</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-name">ruff + mypy</div>
+          <div class="tech-desc">Zero lint errors · full type safety on public API</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-name">GitHub Actions</div>
+          <div class="tech-desc">Linux · macOS · Windows CI matrix builds</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-name">JSON Profiles</div>
+          <div class="tech-desc">Pluggable device profiles · community contributable</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- INSTALL -->
+  <section id="install">
+    <div class="section-label">// get started</div>
+    <h2>Quick Install</h2>
+    <p class="section-intro">
+      CyberFlash runs on Linux, macOS, and Windows. Python 3.12+ and pip are the only prerequisites.
+    </p>
+
+    <div class="code-block">
+      <div class="comment"># 1 — Clone the repository</div>
+      <div class="cmd">git clone https://github.com/lchtangen/CyberFlash-Tool.git</div>
+      <div class="cmd">cd CyberFlash-Tool</div>
+      <br />
+      <div class="comment"># 2 — Create a virtual environment and install</div>
+      <div class="cmd">python -m venv .venv</div>
+      <div class="cmd">source .venv/bin/activate  <span class="comment"># Windows: .venv\Scripts\activate</span></div>
+      <div class="cmd">pip install -e <span class="flag">".[dev]"</span></div>
+      <br />
+      <div class="comment"># 3 — Launch</div>
+      <div class="cmd">python -m cyberflash</div>
+    </div>
+
+    <div class="code-block">
+      <div class="comment"># Run the test suite</div>
+      <div class="cmd">pytest tests/</div>
+      <br />
+      <div class="comment"># Lint check</div>
+      <div class="cmd">ruff check src/</div>
+    </div>
+
+    <p style="font-size:0.85rem; color:var(--text-dim); margin-top:1rem;">
+      Linux users: install udev rules for EDL mode support →
+      <code style="color:var(--cyan); font-family:var(--font-mono);">sudo cp resources/udev/51-cyberflash-edl.rules /etc/udev/rules.d/</code>
+    </p>
+  </section>
+
+  <!-- ROADMAP -->
+  <div class="stripe">
+    <section id="roadmap">
+      <div class="section-label">// development status</div>
+      <h2>Roadmap — 21 Phases</h2>
+      <p class="section-intro">
+        Active development across 21 phases covering every aspect of Android device management.
+        Phases 0–6 are production-ready with full test coverage.
+      </p>
+
+      <div class="roadmap-grid">
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-done"></div>
+          <div>
+            <h4>Phase 0–4 + ROM</h4>
+            <p>Scaffold, flash engine, root management, diagnostics, backup, ROM download queue</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-done"></div>
+          <div>
+            <h4>Phase 5 — Multi-Brand</h4>
+            <p>Samsung Heimdall, Xiaomi MIUI/HyperOS, Google Pixel, Motorola rescue + Device Wizard</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-done"></div>
+          <div>
+            <h4>Phase 6 — Advanced Root</h4>
+            <p>KernelSU modules, Play Integrity checker, AnyKernel3, Token Vault, boot animation manager</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-active"></div>
+          <div>
+            <h4>Phase 7 — ROM Intelligence</h4>
+            <p>ROM feed aggregation, metadata tagging, flash journal, wireless ADB, health scoring</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-planned"></div>
+          <div>
+            <h4>Phase 8 — App &amp; File Manager</h4>
+            <p>APK installer/extractor, package manager UI, device file browser with drag-and-drop</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-planned"></div>
+          <div>
+            <h4>Phase 9 — Screen &amp; Input</h4>
+            <p>scrcpy integration, screen recording, screenshot capture, input automation</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-planned"></div>
+          <div>
+            <h4>Phase 10 — Workflow Builder</h4>
+            <p>Visual flash workflow editor, automation scripts, batch device operations</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-planned"></div>
+          <div>
+            <h4>Phase 11 — Plugin System</h4>
+            <p>Community plugin API, sandboxed execution, plugin marketplace integration</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-planned"></div>
+          <div>
+            <h4>Phase 12 — NetHunter</h4>
+            <p>Kali NetHunter installer, kernel selection, chroot management, HID attack profiles</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot dot-planned"></div>
+          <div>
+            <h4>Phase 13–21</h4>
+            <p>Partition editor, GSI checker, benchmark suite, privacy scanner, secure wiper, and more</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONTRIBUTING -->
+  <section>
+    <div class="section-label">// open source</div>
+    <h2>Built for the Community</h2>
+    <p class="section-intro">
+      CyberFlash is MIT-licensed and designed from day one for community contribution.
+      Device profiles are plain JSON files. Core logic is pure Python with no compile cycle.
+      The test suite makes it safe to contribute without breaking things.
+    </p>
+
+    <div class="contrib-grid">
+      <div class="contrib-card">
+        <h3>Add Device Profiles</h3>
+        <p>Device support is defined in JSON files under <code>resources/profiles/</code>. Add your device by creating a JSON profile — no Python required. Schema is fully documented.</p>
+      </div>
+      <div class="contrib-card">
+        <h3>Fix Bugs &amp; Features</h3>
+        <p>Fork, branch, test, and PR. The strict layer architecture means changes are isolated. Run <code>pytest tests/</code> and <code>ruff check src/</code> before submitting.</p>
+      </div>
+      <div class="contrib-card">
+        <h3>Write Tests</h3>
+        <p>Core modules are pure Python — easy to test without a device. We're targeting 900+ tests. Each new module needs coverage before merge.</p>
+      </div>
+      <div class="contrib-card">
+        <h3>Report Issues</h3>
+        <p>Encountered a device-specific edge case, a bad flash sequence, or a UI bug? Open an issue on GitHub with your device codename and the log output.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem; text-align:center;">
+      <a class="btn btn-primary" href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">
+        ⚡ Contribute on GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">⚡ CYBERFLASH</div>
+    <div class="footer-tagline">The definitive open-source Android ROM flashing and device management tool</div>
+
+    <div class="footer-links">
+      <a href="https://github.com/lchtangen/CyberFlash-Tool" target="_blank">GitHub</a>
+      <a href="https://github.com/lchtangen/CyberFlash-Tool/issues" target="_blank">Issues</a>
+      <a href="https://github.com/lchtangen/CyberFlash-Tool/blob/master/README.md" target="_blank">Docs</a>
+      <a href="https://github.com/lchtangen/CyberFlash-Tool/blob/master/LICENSE" target="_blank">MIT License</a>
+    </div>
+
+    <div class="footer-copy">
+      Built with Python + PySide6 · MIT License · &copy; 2026 Lchtangen &amp; Contributors
+    </div>
+  </footer>
+
+</body>
+</html>
