@@ -1,0 +1,63 @@
+{
+  "codename": "aston",
+  "name": "OnePlus 12",
+  "brand": "OnePlus",
+  "model": "CPH2573",
+  "model_variants": ["CPH2573", "CPH2575"],
+  "chipset": "Snapdragon 8 Gen 3",
+  "ab_slots": true,
+  "bootloader": {
+    "unlock_command": "fastboot flashing unlock",
+    "requires_oem_unlock_menu": true,
+    "warn_data_wipe": true
+  },
+  "flash": {
+    "method": "fastboot",
+    "partitions": [
+      "abl",
+      "aop",
+      "boot",
+      "dtbo",
+      "init_boot",
+      "modem",
+      "odm",
+      "product",
+      "system",
+      "system_ext",
+      "vbmeta",
+      "vbmeta_system",
+      "vendor",
+      "vendor_boot",
+      "vendor_dlkm"
+    ],
+    "erase_partitions": [
+      "boot",
+      "dtbo",
+      "vbmeta",
+      "system",
+      "vendor"
+    ],
+    "vbmeta_partition": "vbmeta",
+    "vbmeta_disable_flags": "--disable-verity --disable-verification"
+  },
+  "recoveries": [
+    {
+      "name": "OrangeFox",
+      "filename_pattern": "OrangeFox-*-aston*.img",
+      "flash_partition": "recovery"
+    },
+    {
+      "name": "TWRP",
+      "filename_pattern": "twrp-*-aston*.img",
+      "flash_partition": "recovery"
+    }
+  ],
+  "wipe_partitions": {
+    "dalvik": null,
+    "cache": "cache",
+    "data": "userdata",
+    "system": "system",
+    "vendor": "vendor"
+  },
+  "notes": "1. Enable 'OEM Unlocking' in Settings > Developer Options.\n2. Use 'fastboot flashing unlock' — OnePlus 12 follows standard Android unlock flow.\n3. Bootloader unlock WILL wipe all user data — back up first.\n4. For A/B devices, CyberFlash flashes the inactive slot and then sets it as active.\n5. Indian/Global variants share the same codename; carrier variants may differ."
+}

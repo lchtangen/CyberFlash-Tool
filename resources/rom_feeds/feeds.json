@@ -1,0 +1,72 @@
+{
+  "feeds": [
+    {
+      "id": "lineageos",
+      "name": "LineageOS",
+      "base_url": "https://download.lineageos.org/api/v1/",
+      "type": "lineage_api",
+      "trust_tier": "verified",
+      "supports_devices": ["all"]
+    },
+    {
+      "id": "pixelexperience",
+      "name": "PixelExperience",
+      "base_url": "https://download.pixelexperience.org/",
+      "type": "pe_api",
+      "trust_tier": "verified",
+      "supports_devices": ["all"]
+    },
+    {
+      "id": "crdroid",
+      "name": "crDroid",
+      "base_url": "https://crdroid.net/dl/",
+      "type": "crdroid_api",
+      "trust_tier": "verified",
+      "supports_devices": ["all"]
+    },
+    {
+      "id": "evolution_x",
+      "name": "Evolution X",
+      "base_url": "https://sourceforge.net/projects/evolution-x/files/",
+      "type": "sourceforge",
+      "trust_tier": "active",
+      "supports_devices": ["all"]
+    },
+    {
+      "id": "havoc_os",
+      "name": "Havoc-OS",
+      "base_url": "https://sourceforge.net/projects/havoc-os/files/",
+      "type": "sourceforge",
+      "trust_tier": "active",
+      "supports_devices": ["all"]
+    },
+    {
+      "id": "twrp",
+      "name": "TWRP Recovery",
+      "base_url": "https://dl.twrp.me/",
+      "type": "twrp",
+      "trust_tier": "verified",
+      "supports_devices": ["all"]
+    },
+    {
+      "id": "orangefox",
+      "name": "OrangeFox Recovery",
+      "base_url": "https://api.orangefox.download/v3/",
+      "type": "orangefox_api",
+      "trust_tier": "verified",
+      "supports_devices": ["all"]
+    },
+    {
+      "id": "iodeos",
+      "name": "IodéOS",
+      "url": "https://gitlab.com/iode/os/public-api/-/raw/main/builds.json",
+      "trust_tier": 2
+    },
+    {
+      "id": "divestos",
+      "name": "DivestOS",
+      "url": "https://divestos.org/builds/",
+      "trust_tier": 2
+    }
+  ]
+}

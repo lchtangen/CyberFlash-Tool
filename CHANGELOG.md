@@ -5,6 +5,48 @@ Organized by development phase. Dates are approximate release milestones.
 
 ---
 
+## [Phase 7] — 2026-02-28 — Premium Completion & Phase 7 Features
+
+### Device Profiles
+- Added 20 device profiles spanning 5 brands (21 total including the existing OnePlus 7 Pro):
+  - **Samsung (6):** Galaxy S21 (r8q), S22 (o1q), S23 (dm1q), A52 5G (a52q), S10+ Exynos (beyond1), S20 FE (star2qltechn)
+  - **Google Pixel (5):** Pixel 6 (oriole), 6a (bluejay), 7 (panther), 7a (lynx), 8 (shiba)
+  - **Xiaomi/POCO (5):** Redmi Note 10 Pro (sweet), Note 11 (spes), POCO F3 (alioth), Xiaomi 11 Pro (venus), Redmi 10C (evergo)
+  - **OnePlus (2):** OnePlus 8 Pro (instantnoodle), 9 Pro (lahaina)
+  - **Motorola (2):** Moto G52 (rhodej), Edge 30 (berlin)
+- All profiles include chipset, partition list, wipe targets, recovery entries, EDL config, and flash notes
+
+### Theme System
+- Implemented `ui/themes/cyber_light.qss` — professional GitHub-style light theme (~1285 selectors)
+- Implemented `ui/themes/cyber_green.qss` — matrix/hacker terminal green-on-black theme (~1285 selectors)
+- All three built-in themes (dark / light / green) now fully functional — no more silent dark fallback
+
+### Navigation & Icons
+- Added 6 new 3D SVG icons to `ui/themes/icons.py`: App Manager, File Manager, Magisk, Prop Editor, Privacy, Batch
+- Expanded sidebar from 12 → **18 navigation items**:
+  - Magisk Modules (after Root)
+  - App Manager, File Manager, Prop Editor, Privacy Scan, Batch Ops (after NetHunter)
+
+### New Pages
+- `ui/pages/privacy_page.py` — Privacy & Tracking Scanner: per-app SDK detection, dangerous permission scoring, A–F grade badges, JSON export
+- `ui/pages/batch_page.py` — Batch Device Operations: multi-device flash/backup/root with per-device progress bars and abort controls
+
+### Premium Features
+- `ui/system_tray.py` — System tray icon with device status indicator (green/red), quick actions, connect/disconnect notifications
+- `ui/widgets/journal_viewer.py` — Flash journal timeline viewer with step-log detail and rollback trigger
+- `ui/widgets/network_scanner.py` — Wireless ADB discovery dialog (subnet scan, connect, pair)
+- `ui/widgets/boot_anim_preview.py` — Boot animation preview: frame-by-frame rendering, drag-and-drop .zip, install/backup/reset
+- `ui/dialogs/device_compare_dialog.py` — Side-by-side device comparison with difference highlighting
+
+### ROM Feed Registry
+- `resources/rom_feeds/feeds.json` — 7 real ROM feed sources: LineageOS, PixelExperience, crDroid, Evolution X, Havoc-OS, TWRP, OrangeFox
+- `core/feed_registry.py` — FeedRegistry with type-mapped API strategies, tier filtering, and lazy-load from JSON
+
+### Tests
+- **Cumulative: 622+ tests passing** (existing suite, no regressions)
+
+---
+
 ## [Phase 6] — 2026-02-25 — Advanced Root & Security
 
 ### Added

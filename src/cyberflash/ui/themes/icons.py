@@ -511,27 +511,354 @@ ICON_RESCUE = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
   <circle cx="9.5" cy="9.5" r="2" fill="white" opacity="0.2"/>
 </svg>"""
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 13. APP MANAGER — 3D grid of 4 app tiles with badge dots
+# ─────────────────────────────────────────────────────────────────────────────
+ICON_APP_MANAGER = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="amg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="{COLOR}"/>
+      <stop offset="100%" stop-color="{COLOR}" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="amh" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="white" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="amglow">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.2"
+        flood-color="{COLOR}" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <!-- Top-left tile -->
+  <rect x="1.5" y="1.5" width="9.5" height="9.5" rx="2.5" fill="url(#amg)" filter="url(#amglow)"/>
+  <rect x="1.5" y="1.5" width="9.5" height="9.5" rx="2.5" fill="url(#amh)"/>
+  <!-- Top-right tile -->
+  <rect x="13" y="1.5" width="9.5" height="9.5" rx="2.5" fill="{COLOR}" opacity="0.75" filter="url(#amglow)"/>
+  <rect x="13" y="1.5" width="9.5" height="9.5" rx="2.5" fill="url(#amh)" opacity="0.7"/>
+  <!-- Bottom-left tile -->
+  <rect x="1.5" y="13" width="9.5" height="9.5" rx="2.5" fill="{COLOR}" opacity="0.75" filter="url(#amglow)"/>
+  <rect x="1.5" y="13" width="9.5" height="9.5" rx="2.5" fill="url(#amh)" opacity="0.7"/>
+  <!-- Bottom-right tile -->
+  <rect x="13" y="13" width="9.5" height="9.5" rx="2.5" fill="{COLOR}" opacity="0.5" filter="url(#amglow)"/>
+  <rect x="13" y="13" width="9.5" height="9.5" rx="2.5" fill="url(#amh)" opacity="0.5"/>
+  <!-- Badge dots (top-right corner of each tile) -->
+  <circle cx="10" cy="3" r="1.8" fill="white" opacity="0.9"/>
+  <circle cx="21.5" cy="3" r="1.8" fill="white" opacity="0.75"/>
+  <circle cx="10" cy="14.5" r="1.8" fill="white" opacity="0.75"/>
+  <circle cx="21.5" cy="14.5" r="1.8" fill="white" opacity="0.55"/>
+</svg>"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 14. FILE MANAGER — 3D folder with document stack inside
+# ─────────────────────────────────────────────────────────────────────────────
+ICON_FILE_MANAGER = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="fmg" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="{COLOR}"/>
+      <stop offset="100%" stop-color="{COLOR}" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="fmh" x1="0" y1="0" x2="0.5" y2="0.7">
+      <stop offset="0%" stop-color="white" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="fmglow">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.2"
+        flood-color="{COLOR}" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <!-- Folder shadow (3D depth) -->
+  <path d="M2 8 Q2 6 4 6 L9.5 6 L11 8 L21 8 Q22 8 22 9.5 L22 19 Q22 20 21 20 L3 20 Q2 20 2 19 Z"
+    fill="{COLOR}" opacity="0.25" transform="translate(0.6,1)"/>
+  <!-- Folder body -->
+  <path d="M2 8 Q2 6 4 6 L9.5 6 L11 8 L21 8 Q22 8 22 9.5 L22 19 Q22 20 21 20 L3 20 Q2 20 2 19 Z"
+    fill="url(#fmg)" filter="url(#fmglow)"/>
+  <!-- Folder tab (top-left) -->
+  <path d="M2 8 L2 6.5 Q2 5 3.5 5 L9 5 L10.5 8 Z"
+    fill="{COLOR}" opacity="0.85"/>
+  <!-- Folder highlight overlay -->
+  <path d="M2 8 Q2 6 4 6 L9.5 6 L11 8 L21 8 Q22 8 22 9.5 L22 19 Q22 20 21 20 L3 20 Q2 20 2 19 Z"
+    fill="url(#fmh)"/>
+  <!-- Document stack inside folder -->
+  <rect x="7" y="11" width="10" height="7" rx="1" fill="white" opacity="0.3"/>
+  <rect x="8" y="10" width="8" height="6.5" rx="1" fill="white" opacity="0.5"/>
+  <!-- Document lines -->
+  <line x1="9.5" y1="12" x2="14.5" y2="12" stroke="{COLOR}" stroke-width="0.8" stroke-opacity="0.7" stroke-linecap="round"/>
+  <line x1="9.5" y1="13.5" x2="14.5" y2="13.5" stroke="{COLOR}" stroke-width="0.8" stroke-opacity="0.7" stroke-linecap="round"/>
+  <line x1="9.5" y1="15" x2="12.5" y2="15" stroke="{COLOR}" stroke-width="0.8" stroke-opacity="0.7" stroke-linecap="round"/>
+</svg>"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 15. MAGISK — 3D delta/triangle shield (Magisk logo)
+# ─────────────────────────────────────────────────────────────────────────────
+ICON_MAGISK = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="mgg" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="{COLOR}"/>
+      <stop offset="100%" stop-color="{COLOR}" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="mgh" x1="0" y1="0" x2="0.4" y2="0.7">
+      <stop offset="0%" stop-color="white" stop-opacity="0.5"/>
+      <stop offset="55%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="mgglow">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.8"
+        flood-color="{COLOR}" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+  <!-- Triangle shadow (3D depth) -->
+  <polygon points="12,2 22,20 2,20"
+    fill="{COLOR}" opacity="0.25" transform="translate(0.7,1.2)"/>
+  <!-- Main triangle body -->
+  <polygon points="12,2 22,20 2,20"
+    fill="url(#mgg)" filter="url(#mgglow)"/>
+  <!-- Highlight overlay -->
+  <polygon points="12,2 22,20 2,20"
+    fill="url(#mgh)"/>
+  <!-- Left edge highlight -->
+  <line x1="2" y1="20" x2="12" y2="2"
+    stroke="white" stroke-width="0.8" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Inner triangle cutout for Magisk M shape -->
+  <polygon points="12,7 18.5,18.5 5.5,18.5"
+    fill="black" opacity="0.35"/>
+  <!-- Inner M hint: two smaller triangles -->
+  <polygon points="9,18.5 12,13 15,18.5"
+    fill="white" opacity="0.55"/>
+  <line x1="9" y1="18.5" x2="12" y2="13"
+    stroke="white" stroke-width="0.6" stroke-opacity="0.3" stroke-linecap="round"/>
+</svg>"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 16. PROP EDITOR — 3D document with gear overlay
+# ─────────────────────────────────────────────────────────────────────────────
+ICON_PROP_EDITOR = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="peg" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="{COLOR}"/>
+      <stop offset="100%" stop-color="{COLOR}" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="peh" x1="0" y1="0" x2="0.5" y2="0.8">
+      <stop offset="0%" stop-color="white" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="peglow">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.2"
+        flood-color="{COLOR}" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <!-- Document shadow (3D depth) -->
+  <path d="M5 2 L15 2 L19 6 L19 22 L5 22 Z"
+    fill="{COLOR}" opacity="0.25" transform="translate(0.6,0.8)"/>
+  <!-- Document body -->
+  <path d="M5 2 L15 2 L19 6 L19 22 L5 22 Z"
+    fill="url(#peg)" filter="url(#peglow)"/>
+  <!-- Folded corner -->
+  <path d="M15 2 L15 6 L19 6 Z"
+    fill="black" opacity="0.25"/>
+  <path d="M15 2 L15 6 L19 6 Z"
+    fill="white" opacity="0.15"/>
+  <!-- Document highlight overlay -->
+  <path d="M5 2 L15 2 L19 6 L19 22 L5 22 Z"
+    fill="url(#peh)"/>
+  <!-- Text lines on document -->
+  <line x1="7.5" y1="9" x2="14.5" y2="9" stroke="white" stroke-width="0.9" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="7.5" y1="11.5" x2="16" y2="11.5" stroke="white" stroke-width="0.9" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="7.5" y1="14" x2="13" y2="14" stroke="white" stroke-width="0.9" stroke-opacity="0.55" stroke-linecap="round"/>
+  <!-- Gear overlay (bottom-right, 6-point star simplified) -->
+  <g transform="translate(15.5,17.5)">
+    <circle r="3.5" fill="{COLOR}" opacity="0.9" filter="url(#peglow)"/>
+    <circle r="3.5" fill="url(#peh)" opacity="0.7"/>
+    <!-- Gear teeth (6 points) -->
+    <polygon points="0,-3.5 0.7,-2 -0.7,-2" fill="{COLOR}" opacity="0.9"/>
+    <polygon points="0,3.5 0.7,2 -0.7,2" fill="{COLOR}" opacity="0.9"/>
+    <polygon points="-3.5,0 -2,0.7 -2,-0.7" fill="{COLOR}" opacity="0.9"/>
+    <polygon points="3.5,0 2,0.7 2,-0.7" fill="{COLOR}" opacity="0.9"/>
+    <polygon points="-2.5,-2.5 -1.2,-1.2 -2.2,-0.2" fill="{COLOR}" opacity="0.9"/>
+    <polygon points="2.5,2.5 1.2,1.2 2.2,0.2" fill="{COLOR}" opacity="0.9"/>
+    <!-- Center hole -->
+    <circle r="1.4" fill="black" opacity="0.4"/>
+    <circle r="1.1" fill="{COLOR}" opacity="0.6"/>
+  </g>
+</svg>"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 17. PRIVACY — 3D eye with shield/lock overlay
+# ─────────────────────────────────────────────────────────────────────────────
+ICON_PRIVACY = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="pvg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="{COLOR}"/>
+      <stop offset="100%" stop-color="{COLOR}" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="pvh" x1="0" y1="0" x2="0.5" y2="0.7">
+      <stop offset="0%" stop-color="white" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="pvglow">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.2"
+        flood-color="{COLOR}" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <!-- Eye shadow (3D depth) -->
+  <path d="M2 12 Q12 3 22 12 Q12 21 2 12 Z"
+    fill="{COLOR}" opacity="0.22" transform="translate(0.4,0.8)"/>
+  <!-- Eye white / outer shape -->
+  <path d="M2 12 Q12 3 22 12 Q12 21 2 12 Z"
+    fill="url(#pvg)" filter="url(#pvglow)"/>
+  <!-- Eye highlight overlay -->
+  <path d="M2 12 Q12 3 22 12 Q12 21 2 12 Z"
+    fill="url(#pvh)"/>
+  <!-- Iris (dark circle) -->
+  <circle cx="12" cy="12" r="4.2" fill="black" opacity="0.5"/>
+  <!-- Iris fill with color -->
+  <circle cx="12" cy="12" r="3.5" fill="{COLOR}" opacity="0.75" filter="url(#pvglow)"/>
+  <!-- Pupil -->
+  <circle cx="12" cy="12" r="1.8" fill="black" opacity="0.65"/>
+  <!-- Eye highlight dot -->
+  <circle cx="10.8" cy="10.8" r="0.9" fill="white" opacity="0.7"/>
+  <!-- Shield overlay (bottom-right) -->
+  <path d="M17.5 14.5 L21 15.8 L21 19 Q21 21.5 17.5 22.5 Q14 21.5 14 19 L14 15.8 Z"
+    fill="{COLOR}" opacity="0.25" transform="translate(0.5,0.5)"/>
+  <path d="M17.5 14.5 L21 15.8 L21 19 Q21 21.5 17.5 22.5 Q14 21.5 14 19 L14 15.8 Z"
+    fill="url(#pvg)" filter="url(#pvglow)"/>
+  <path d="M17.5 14.5 L21 15.8 L21 19 Q21 21.5 17.5 22.5 Q14 21.5 14 19 L14 15.8 Z"
+    fill="url(#pvh)"/>
+  <!-- Lock icon inside shield -->
+  <rect x="16.2" y="18" width="2.6" height="2" rx="0.5" fill="white" opacity="0.85"/>
+  <path d="M16.5 18 L16.5 17 Q16.5 15.5 17.5 15.5 Q18.5 15.5 18.5 17 L18.5 18"
+    fill="none" stroke="white" stroke-width="0.9" stroke-opacity="0.85" stroke-linecap="round"/>
+</svg>"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 18. BATCH — 3D grid of 3 device rectangles with checkmarks
+# ─────────────────────────────────────────────────────────────────────────────
+ICON_BATCH = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="btg" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="{COLOR}"/>
+      <stop offset="100%" stop-color="{COLOR}" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="bth" x1="0" y1="0" x2="0.5" y2="0.8">
+      <stop offset="0%" stop-color="white" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="btglow">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.2"
+        flood-color="{COLOR}" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <!-- Left device shadow -->
+  <rect x="1.5" y="3.5" width="6" height="17" rx="1.5"
+    fill="{COLOR}" opacity="0.2" transform="translate(0.5,0.8)"/>
+  <!-- Left device body -->
+  <rect x="1.5" y="3.5" width="6" height="17" rx="1.5"
+    fill="url(#btg)" filter="url(#btglow)"/>
+  <rect x="1.5" y="3.5" width="6" height="7" rx="1.5"
+    fill="url(#bth)"/>
+  <!-- Left device checkmark -->
+  <polyline points="3,12.5 4.2,14 6.5,11"
+    fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <!-- Center device shadow -->
+  <rect x="9" y="3.5" width="6" height="17" rx="1.5"
+    fill="{COLOR}" opacity="0.2" transform="translate(0.5,0.8)"/>
+  <!-- Center device body -->
+  <rect x="9" y="3.5" width="6" height="17" rx="1.5"
+    fill="{COLOR}" opacity="0.7" filter="url(#btglow)"/>
+  <rect x="9" y="3.5" width="6" height="7" rx="1.5"
+    fill="url(#bth)" opacity="0.7"/>
+  <!-- Center device checkmark -->
+  <polyline points="10.5,12.5 11.7,14 14,11"
+    fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+  <!-- Right device shadow -->
+  <rect x="16.5" y="3.5" width="6" height="17" rx="1.5"
+    fill="{COLOR}" opacity="0.2" transform="translate(0.5,0.8)"/>
+  <!-- Right device body -->
+  <rect x="16.5" y="3.5" width="6" height="17" rx="1.5"
+    fill="{COLOR}" opacity="0.5" filter="url(#btglow)"/>
+  <rect x="16.5" y="3.5" width="6" height="7" rx="1.5"
+    fill="url(#bth)" opacity="0.5"/>
+  <!-- Right device checkmark -->
+  <polyline points="18,12.5 19.2,14 21.5,11"
+    fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+</svg>"""
+
+
+ICON_WORKFLOW = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <rect x="1" y="2" width="7" height="4" rx="1" fill="{COLOR}" opacity="0.9"/>
+  <rect x="8.5" y="10" width="7" height="4" rx="1" fill="{COLOR}" opacity="0.75"/>
+  <rect x="16" y="18" width="7" height="4" rx="1" fill="{COLOR}" opacity="0.6"/>
+  <polyline points="4.5,6 4.5,8 12,8 12,10" stroke="{COLOR}" stroke-width="1.2"
+    fill="none" opacity="0.8"/>
+  <polyline points="15.5,14 15.5,16 19.5,16 19.5,18" stroke="{COLOR}" stroke-width="1.2"
+    fill="none" opacity="0.8"/>
+</svg>"""
+
+ICON_SCRIPTING = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <rect x="2" y="3" width="20" height="18" rx="2" fill="{COLOR}" opacity="0.15"/>
+  <rect x="2" y="3" width="20" height="4" rx="2" fill="{COLOR}" opacity="0.5"/>
+  <polyline points="7,13 4,15 7,17" stroke="{COLOR}" stroke-width="1.8" fill="none"
+    stroke-linecap="round"/>
+  <polyline points="17,13 20,15 17,17" stroke="{COLOR}" stroke-width="1.8" fill="none"
+    stroke-linecap="round"/>
+  <line x1="11" y1="13" x2="13" y2="17" stroke="{COLOR}" stroke-width="1.4"
+    stroke-linecap="round"/>
+</svg>"""
+
+ICON_SERVICE_MANAGER = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="3" fill="{COLOR}" opacity="0.9"/>
+  <path d="M12 2 L13.5 5.5 L17 4 L17 7.5 L20.5 8 L19 12 L20.5 16 L17 16.5 L17 20
+           L13.5 18.5 L12 22 L10.5 18.5 L7 20 L7 16.5 L3.5 16 L5 12 L3.5 8
+           L7 7.5 L7 4 L10.5 5.5 Z"
+    fill="{COLOR}" opacity="0.6"/>
+</svg>"""
+
+ICON_FLEET = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <rect x="1" y="5" width="7" height="12" rx="1.5" fill="{COLOR}" opacity="0.45"/>
+  <rect x="5" y="3" width="7" height="14" rx="1.5" fill="{COLOR}" opacity="0.7"/>
+  <rect x="9" y="5" width="7" height="12" rx="1.5" fill="{COLOR}" opacity="0.45"/>
+  <circle cx="8.5" cy="15.5" r="0.8" fill="{COLOR}" opacity="0.9"/>
+</svg>"""
+
+ICON_THEME_STUDIO = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <ellipse cx="12" cy="13" rx="9" ry="8" fill="{COLOR}" opacity="0.5"/>
+  <circle cx="8"  cy="10" r="2"  fill="{COLOR}" opacity="0.9"/>
+  <circle cx="12" cy="8"  r="2"  fill="{COLOR}" opacity="0.75"/>
+  <circle cx="16" cy="10" r="2"  fill="{COLOR}" opacity="0.6"/>
+  <circle cx="15" cy="15" r="2"  fill="{COLOR}" opacity="0.45"/>
+  <circle cx="9" cy="17" r="2.5" fill="none" stroke="{COLOR}" stroke-width="1.2"/>
+</svg>"""
+
 
 # ── Icon map ──────────────────────────────────────────────────────────────────
 
 _ICON_MAP: dict[str, str] = {
-    "dashboard":   ICON_DASHBOARD,
-    "device":      ICON_DEVICE,
-    "flash":       ICON_FLASH,
-    "rom_library": ICON_ROM_LIBRARY,
-    "backup":      ICON_BACKUP,
-    "root":        ICON_ROOT,
-    "nethunter":   ICON_NETHUNTER,
-    "partition":   ICON_PARTITION,
-    "terminal":    ICON_TERMINAL,
-    "diagnostics": ICON_DIAGNOSTICS,
-    "rescue":      ICON_RESCUE,
-    "settings":    ICON_SETTINGS,
+    "dashboard":        ICON_DASHBOARD,
+    "device":           ICON_DEVICE,
+    "flash":            ICON_FLASH,
+    "rom_library":      ICON_ROM_LIBRARY,
+    "backup":           ICON_BACKUP,
+    "root":             ICON_ROOT,
+    "nethunter":        ICON_NETHUNTER,
+    "partition":        ICON_PARTITION,
+    "terminal":         ICON_TERMINAL,
+    "diagnostics":      ICON_DIAGNOSTICS,
+    "rescue":           ICON_RESCUE,
+    "settings":         ICON_SETTINGS,
+    "app_manager":      ICON_APP_MANAGER,
+    "file_manager":     ICON_FILE_MANAGER,
+    "magisk":           ICON_MAGISK,
+    "prop_editor":      ICON_PROP_EDITOR,
+    "privacy":          ICON_PRIVACY,
+    "batch":            ICON_BATCH,
+    "workflow":         ICON_WORKFLOW,
+    "scripting":        ICON_SCRIPTING,
+    "service_manager":  ICON_SERVICE_MANAGER,
+    "fleet":            ICON_FLEET,
+    "theme_studio":     ICON_THEME_STUDIO,
 }
 
 
 def get_icon(name: str, color: str = "#00d4ff", size: int = 32) -> QIcon:
-    """Return a QIcon for the given sidebar icon name at *size* × *size* pixels.
+    """Return a QIcon for the given sidebar icon name at *size* x *size* pixels.
 
     Args:
         name:  Icon key from ``_ICON_MAP``.
@@ -539,7 +866,7 @@ def get_icon(name: str, color: str = "#00d4ff", size: int = 32) -> QIcon:
         size:  Output pixel size (default 32).
 
     Returns:
-        QIcon rendered at *size* × *size* with transparent background.
+      QIcon rendered at *size* x *size* with transparent background.
     """
     svg_template = _ICON_MAP.get(name, ICON_DASHBOARD)
     svg_data = svg_template.replace("{COLOR}", color)
@@ -730,7 +1057,7 @@ def get_hero_phone_pixmap(color: str = "#00d4ff", size: int = 160) -> QPixmap:
 
     Args:
         color: Primary theme color (hex) for the phone frame and glow.
-        size:  Width in pixels (height = size × 1.25 for 160:200 ratio).
+        size:  Width in pixels (height = size x 1.25 for 160:200 ratio).
 
     Returns:
         QPixmap with transparent background.

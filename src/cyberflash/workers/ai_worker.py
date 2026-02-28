@@ -42,6 +42,7 @@ class AIWorker(BaseWorker):
     risk_ready = Signal(object)  # RiskAssessment
     chat_response = Signal(str)
     workflow_ready = Signal(object)  # Workflow
+    rom_scored = Signal(object)  # RomScore
 
     def __init__(self) -> None:
         super().__init__()
@@ -151,6 +152,21 @@ class AIWorker(BaseWorker):
             self.chat_response.emit(response)
         except Exception as exc:
             logger.exception("AI answer_query failed")
+            self.error.emit(str(exc))
+
+    # ── Slot: score ROM release ──────────────────────────────────────────────
+
+    @Slot(object, object)
+    def score_rom(self, release: object, profile: object) -> None:
+        """Score a RomRelease and emit the RomScore result."""
+        try:
+            from cyberflash.core.rom_ai_scorer import RomAiScorer
+
+            scorer = RomAiScorer()
+            score = scorer.score_release(release, profile, self._gemini)
+            self.rom_scored.emit(score)
+        except Exception as exc:
+            logger.exception("AI score_rom failed")
             self.error.emit(str(exc))
 
     # ── Slot: plan workflow ──────────────────────────────────────────────────

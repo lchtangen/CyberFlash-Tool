@@ -1,0 +1,81 @@
+{
+  "codename": "star2qltechn",
+  "name": "Galaxy S20 FE",
+  "brand": "Samsung",
+  "model": "SM-G781B",
+  "model_variants": ["SM-G781B", "SM-G781U", "SM-G781W"],
+  "chipset": "Snapdragon 865",
+  "ab_slots": true,
+  "bootloader": {
+    "unlock_command": "fastboot oem unlock",
+    "requires_oem_unlock_menu": true,
+    "warn_data_wipe": true
+  },
+  "flash": {
+    "method": "fastboot",
+    "partitions": [
+      "abl",
+      "aop",
+      "bluetooth",
+      "boot",
+      "cmnlib",
+      "cmnlib64",
+      "devcfg",
+      "dsp",
+      "dtbo",
+      "hyp",
+      "keymaster",
+      "modem",
+      "odm",
+      "qupfw",
+      "system",
+      "tz",
+      "vbmeta",
+      "vendor",
+      "xbl",
+      "xbl_config"
+    ],
+    "erase_partitions": [
+      "boot",
+      "dtbo",
+      "vbmeta",
+      "system",
+      "vendor",
+      "odm"
+    ],
+    "vbmeta_partition": "vbmeta",
+    "vbmeta_disable_flags": "--disable-verity --disable-verification"
+  },
+  "recoveries": [
+    {
+      "name": "OrangeFox",
+      "filename_pattern": "OrangeFox-*-star2qltechn*.img",
+      "flash_partition": "recovery"
+    },
+    {
+      "name": "TWRP",
+      "filename_pattern": "twrp-*-star2qltechn*.img",
+      "flash_partition": "recovery"
+    }
+  ],
+  "wipe_partitions": {
+    "dalvik": null,
+    "cache": "cache",
+    "data": "userdata",
+    "system": "system",
+    "vendor": "vendor"
+  },
+  "notes": "1. Enable 'OEM Unlocking' in Settings > Developer Options before unlocking bootloader.\n2. Bootloader unlock WILL wipe all user data — back up first.\n3. US carrier variants may have bootloader unlock disabled; use international (SM-G781B) for full support.\n4. Flash vbmeta with --disable-verity --disable-verification to allow custom ROMs.\n5. For A/B devices, CyberFlash flashes the inactive slot and then sets it as active.",
+  "edl": {
+    "vid": "04E8",
+    "pid": "685D",
+    "programmer_filename": "prog_ufs_firehose_sm8250.elf",
+    "msm_package_url": "https://samfrew.com/",
+    "edl_entry_methods": [
+      "Method 1 (Key Combo): Power off device. Hold Vol DOWN + connect USB cable.",
+      "Method 2 (ADB, if partially booting): adb reboot edl",
+      "Method 3 (Last Resort - Test Points): Requires device disassembly. Short test points on motherboard.",
+      "IMPORTANT: Samsung EDL mode (Download Mode) uses a different VID/PID than Qualcomm standard."
+    ]
+  }
+}

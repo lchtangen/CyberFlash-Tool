@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSizePolicy,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -25,6 +26,7 @@ from cyberflash.models.rom_source import RomSource, SourceStatus
 from cyberflash.services.rom_link_service import RomLinkService
 from cyberflash.ui.widgets.cyber_badge import CyberBadge
 from cyberflash.ui.widgets.cyber_card import CyberCard
+from cyberflash.ui.widgets.rom_catalog_widget import RomCatalogWidget
 from cyberflash.workers.download_worker import DownloadWorker
 
 # ── Status → badge variant mapping ───────────────────────────────────────────
@@ -41,16 +43,26 @@ _STATUS_BADGE: dict[SourceStatus, tuple[str, str]] = {
 
 
 class RomLibraryPage(QWidget):
-    """Main ROM Library page with source monitoring UI."""
+    """Main ROM Library page with AI catalog and source monitoring."""
 
-    source_added = Signal(str)  # url
+    source_added = Signal(str)    # url
+    flash_requested = Signal(object)  # CatalogEntry
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._service: RomLinkService | None = None
         self._source_cards: dict[str, _SourceCard] = {}          # url → card widget
         self._active_downloads: dict[str, tuple[DownloadWorker, QThread]] = {}  # url → (worker, thread)
+        self._catalog_widget: RomCatalogWidget | None = None
         self._setup_ui()
+
+    # ── Service binding ───────────────────────────────────────────────────────
+
+    def set_discovery_service(self, svc: object) -> None:
+        """Bind the ROM discovery service to the catalog tab."""
+        if self._catalog_widget is not None:
+            self._catalog_widget.set_discovery_service(svc)
+            self._catalog_widget.flash_requested.connect(self.flash_requested)
 
     # ── UI setup ──────────────────────────────────────────────────────────────
 
@@ -63,13 +75,33 @@ class RomLibraryPage(QWidget):
         header = self._build_header()
         root.addLayout(header)
 
+        # Tab widget: ROM Catalog | Source Monitor
+        tabs = QTabWidget()
+
+        # ── Tab 0: ROM Catalog ─────────────────────────────────────────────
+        self._catalog_widget = RomCatalogWidget()
+        tabs.addTab(self._catalog_widget, "ROM Catalog")
+
+        # ── Tab 1: Source Monitor (existing content) ───────────────────────
+        monitor_tab = self._build_source_monitor_tab()
+        tabs.addTab(monitor_tab, "Source Monitor")
+
+        root.addWidget(tabs)
+
+    def _build_source_monitor_tab(self) -> QWidget:
+        """Build the original source monitoring UI as a contained widget."""
+        tab = QWidget()
+        layout = QVBoxLayout(tab)
+        layout.setContentsMargins(0, 8, 0, 0)
+        layout.setSpacing(12)
+
         # Stats bar
         self._stats_bar = _StatsBar()
-        root.addWidget(self._stats_bar)
+        layout.addWidget(self._stats_bar)
 
         # Add-source input row
         input_row = self._build_input_row()
-        root.addLayout(input_row)
+        layout.addLayout(input_row)
 
         # Scrollable source list
         scroll = QScrollArea()
@@ -84,13 +116,15 @@ class RomLibraryPage(QWidget):
         self._source_layout.addStretch()
 
         scroll.setWidget(self._source_container)
-        root.addWidget(scroll)
+        layout.addWidget(scroll)
 
         # Empty state
         self._empty_label = QLabel("No ROM sources added yet.\nPaste a URL above to start.")
         self._empty_label.setObjectName("emptyHint")
         self._empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._source_layout.insertWidget(0, self._empty_label)
+
+        return tab
 
     def _build_header(self) -> QHBoxLayout:
         layout = QHBoxLayout()

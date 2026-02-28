@@ -1,0 +1,53 @@
+{
+  "codename": "beyond1",
+  "name": "Galaxy S10+",
+  "brand": "Samsung",
+  "model": "SM-G975F",
+  "model_variants": ["SM-G975F", "SM-G975U", "SM-G975W"],
+  "chipset": "Exynos 9820",
+  "ab_slots": false,
+  "bootloader": {
+    "unlock_command": "heimdall flash --RECOVERY recovery.img",
+    "requires_oem_unlock_menu": true,
+    "warn_data_wipe": true
+  },
+  "flash": {
+    "method": "heimdall",
+    "partitions": [
+      "boot",
+      "recovery",
+      "system",
+      "vendor",
+      "odm",
+      "userdata",
+      "cache"
+    ],
+    "erase_partitions": [
+      "boot",
+      "recovery",
+      "system",
+      "vendor",
+      "odm"
+    ]
+  },
+  "recoveries": [
+    {
+      "name": "OrangeFox",
+      "filename_pattern": "OrangeFox-*-beyond1*.img",
+      "flash_partition": "recovery"
+    },
+    {
+      "name": "TWRP",
+      "filename_pattern": "twrp-*-beyond1*.img",
+      "flash_partition": "recovery"
+    }
+  ],
+  "wipe_partitions": {
+    "dalvik": null,
+    "cache": "cache",
+    "data": "userdata",
+    "system": "system",
+    "vendor": "vendor"
+  },
+  "notes": "1. Enable 'OEM Unlocking' in Settings > Developer Options before unlocking bootloader.\n2. This device uses Heimdall (Odin protocol) instead of fastboot — EDL is not available on Exynos.\n3. Bootloader unlock WILL wipe all user data — back up first.\n4. Use Heimdall to flash recovery directly; reboot into recovery immediately after flashing.\n5. The Exynos variant does not support EDL mode; hardware repair requires Samsung service tools."
+}

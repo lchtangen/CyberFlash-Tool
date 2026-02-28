@@ -5,11 +5,13 @@
 **The definitive open-source, AI-powered Android ROM flashing and device management desktop app.**
 
 [![Tests](https://img.shields.io/badge/tests-622%2B%20passing-brightgreen?style=flat-square&logo=pytest)](https://github.com/lchtangen/CyberFlash-Tool/actions)
+[![Devices](https://img.shields.io/badge/device%20profiles-21-blueviolet?style=flat-square)]()
+[![Themes](https://img.shields.io/badge/themes-3%20fully%20functional-orange?style=flat-square)]()
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue?style=flat-square&logo=python)](https://python.org)
 [![PySide6](https://img.shields.io/badge/PySide6-Qt%206-41cd52?style=flat-square&logo=qt)](https://doc.qt.io/qtforpython/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=flat-square)]()
-[![Phases](https://img.shields.io/badge/phases-6%20of%2021%20complete-cyan?style=flat-square)]()
+[![Phases](https://img.shields.io/badge/phases-7%20of%2021%20complete-cyan?style=flat-square)]()
 [![Lint](https://img.shields.io/badge/lint-ruff%20clean-orange?style=flat-square)](https://github.com/astral-sh/ruff)
 
 [**🌐 Website**](https://lchtangen.github.io/CyberFlash-Tool/) · [**📸 Screenshots**](https://lchtangen.github.io/CyberFlash-Tool/screenshots.html) · [**🗺️ Roadmap**](https://lchtangen.github.io/CyberFlash-Tool/roadmap.html) · [**📋 Changelog**](https://lchtangen.github.io/CyberFlash-Tool/changelog.html) · [**🤝 Contributing**](https://lchtangen.github.io/CyberFlash-Tool/features.html)
@@ -26,7 +28,7 @@ GUI tools, and a stack of outdated scripts.
 
 Built with **Python 3.12 + PySide6 (Qt 6)**, it combines a pixel-perfect cyberpunk UI
 with a rigorously tested, strictly layered architecture. **622+ tests passing.** Lint-clean.
-AI-powered features baked in from day one.
+AI-powered features baked in from day one. **21 device profiles. 18 navigation pages. 3 themes.**
 
 > **Reliability first.** A bad flash can brick a device. Every destructive operation
 > has dry-run mode, danger confirmation, and journal logging before it executes.
@@ -60,7 +62,22 @@ AI-powered features baked in from day one.
 - Play Integrity / SafetyNet 3-tier checker (BASIC / DEVICE / STRONG) with JSON history
 - **AES-256-GCM Token Vault** — encrypted credential storage with OS keychain integration
 - Security auditor: SELinux, dangerous permissions, developer options, network posture
-- Privacy scanner worker
+- **Privacy Scanner page** — per-app tracking SDK detection (20 known SDKs), dangerous permission scoring, A–F grade badges, JSON export
+
+### 🎨 Theme System
+- Three full themes: **Cyber Dark** (cyberpunk), **Cyber Light** (professional), **Cyber Green** (matrix terminal)
+- All themes cover 1285+ QSS selectors including sidebar, terminal, AI panel, ROM library, automation components
+
+### 📱 Device Profiles
+- **21 supported devices** across 5 brands: Samsung, Google Pixel, Xiaomi/POCO, OnePlus, Motorola
+- Each profile: partitions, wipe targets, recovery entries, EDL config, unlock instructions
+
+### ⚙️ Batch & Advanced Tools
+- **Batch Operations** — flash/backup/root multiple devices simultaneously with per-device progress
+- **App Manager** — uninstall/disable/enable/clear user and system apps in bulk
+- **File Manager** — ADB-powered device filesystem browser
+- **Prop Editor** — read/write build.prop and system properties
+- **Magisk Modules** — repo browser, search, install worker
 
 ### 📦 ROM Library & Downloads
 - AI-powered **trust scoring** for ROM sources (Availability · Safety · Speed · Reputation)

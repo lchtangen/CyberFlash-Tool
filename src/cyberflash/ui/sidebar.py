@@ -17,7 +17,7 @@ from .themes.icons import get_icon
 
 _EXPANDED_WIDTH  = 210
 _COLLAPSED_WIDTH = 68
-_ICON_SIZE       = 32  # Premium 3D icons — rendered at 32×32
+_ICON_SIZE       = 32  # Premium 3D icons — rendered at 32x32
 
 
 @dataclass
@@ -28,18 +28,29 @@ class NavItem:
 
 
 _NAV_ITEMS: list[NavItem] = [
-    NavItem("dashboard", "Dashboard", "dashboard"),
-    NavItem("device", "Device", "device"),
-    NavItem("flash", "Flash", "flash"),
-    NavItem("rom_library", "ROM Library", "rom_library"),
-    NavItem("backup", "Backup", "backup"),
-    NavItem("root", "Root", "root"),
-    NavItem("nethunter", "NetHunter", "nethunter"),
-    NavItem("partition", "Partition", "partition"),
-    NavItem("terminal", "Terminal", "terminal"),
-    NavItem("diagnostics", "Diagnostics", "diagnostics"),
-    NavItem("rescue", "Rescue", "rescue"),
-    NavItem("settings", "Settings", "settings"),
+    NavItem("dashboard",        "Dashboard",        "dashboard"),
+    NavItem("device",           "Device",           "device"),
+    NavItem("fleet",            "Fleet Dashboard",  "fleet"),
+    NavItem("flash",            "Flash",            "flash"),
+    NavItem("rom_library",      "ROM Library",      "rom_library"),
+    NavItem("backup",           "Backup",           "backup"),
+    NavItem("root",             "Root",             "root"),
+    NavItem("magisk_modules",   "Magisk Modules",   "magisk"),
+    NavItem("nethunter",        "NetHunter",        "nethunter"),
+    NavItem("app_manager",      "App Manager",      "app_manager"),
+    NavItem("file_manager",     "File Manager",     "file_manager"),
+    NavItem("prop_editor",      "Prop Editor",      "prop_editor"),
+    NavItem("privacy",          "Privacy Scan",     "privacy"),
+    NavItem("batch",            "Batch Ops",        "batch"),
+    NavItem("workflow",         "Workflow",         "workflow"),
+    NavItem("scripting",        "Scripting IDE",    "scripting"),
+    NavItem("partition",        "Partition",        "partition"),
+    NavItem("terminal",         "Terminal",         "terminal"),
+    NavItem("service_manager",  "Services",         "service_manager"),
+    NavItem("diagnostics",      "Diagnostics",      "diagnostics"),
+    NavItem("rescue",           "Rescue",           "rescue"),
+    NavItem("theme_studio",     "Theme Studio",     "theme_studio"),
+    NavItem("settings",         "Settings",         "settings"),
 ]
 
 

@@ -50,19 +50,19 @@ def _build_partition_proto(name: str, data: bytes, op_type: int = 0) -> bytes:
     """Build a minimal PartitionUpdate protobuf for a REPLACE operation."""
     # Extent: start_block=0, num_blocks=1
     extent = _encode_field_varint(1, 0) + _encode_field_varint(2, 1)
-    # InstallOperation: type, data_offset=0, data_length=len(data), dst_extents
+    # InstallOperation: type=1, data_offset=7, data_length=8, dst_extents=4
     op = (
         _encode_field_varint(1, op_type)
-        + _encode_field_varint(2, 0)  # data_offset
-        + _encode_field_varint(3, len(data))  # data_length
-        + _encode_field_bytes(6, extent)  # dst_extents
+        + _encode_field_varint(7, 0)  # data_offset
+        + _encode_field_varint(8, len(data))  # data_length
+        + _encode_field_bytes(4, extent)  # dst_extents
     )
     # PartitionInfo: size
     part_info = _encode_field_varint(1, len(data))
     return (
         _encode_field_bytes(1, name.encode())  # partition_name
-        + _encode_field_bytes(4, op)  # operations
-        + _encode_field_bytes(8, part_info)  # new_partition_info
+        + _encode_field_bytes(8, op)  # operations (field 8)
+        + _encode_field_bytes(7, part_info)  # new_partition_info (field 7)
     )
 
 
@@ -84,15 +84,15 @@ def _build_payload(partitions: list[tuple[str, bytes, int]]) -> bytes:
         extent = _encode_field_varint(1, 0) + _encode_field_varint(2, 1)
         op = (
             _encode_field_varint(1, op_type)
-            + _encode_field_varint(2, data_offset)
-            + _encode_field_varint(3, len(raw_data))
-            + _encode_field_bytes(6, extent)
+            + _encode_field_varint(7, data_offset)   # data_offset = field 7
+            + _encode_field_varint(8, len(raw_data)) # data_length = field 8
+            + _encode_field_bytes(4, extent)         # dst_extents = field 4
         )
         part_info = _encode_field_varint(1, len(raw_data))
         partition_proto = (
-            _encode_field_bytes(1, name.encode())
-            + _encode_field_bytes(4, op)
-            + _encode_field_bytes(8, part_info)
+            _encode_field_bytes(1, name.encode())  # partition_name
+            + _encode_field_bytes(8, op)           # operations = field 8
+            + _encode_field_bytes(7, part_info)    # new_partition_info = field 7
         )
         manifest_parts.append(_encode_field_bytes(13, partition_proto))
 

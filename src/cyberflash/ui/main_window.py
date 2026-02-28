@@ -11,24 +11,39 @@ from PySide6.QtWidgets import (
 )
 
 from cyberflash.services.ai_service import AIService
+from cyberflash.services.config_service import ConfigService
 from cyberflash.services.device_service import DeviceService
+from cyberflash.services.rom_discovery_service import RomDiscoveryService
 from cyberflash.services.rom_link_service import RomLinkService
+from cyberflash.services.shortcut_service import ShortcutService
 
+from .pages.app_manager_page import AppManagerPage
 from .pages.backup_page import BackupPage
+from .pages.batch_page import BatchPage
 from .pages.dashboard_page import DashboardPage
 from .pages.device_page import DevicePage
 from .pages.diagnostics_page import DiagnosticsPage
+from .pages.file_manager_page import FileManagerPage
 from .pages.flash_page import FlashPage
+from .pages.fleet_dashboard_page import FleetDashboardPage
+from .pages.magisk_modules_page import MagiskModulesPage
 from .pages.nethunter_page import NetHunterPage
 from .pages.partition_page import PartitionPage
+from .pages.privacy_page import PrivacyScannerPage
+from .pages.prop_editor_page import PropEditorPage
 from .pages.rescue_page import RescuePage
 from .pages.rom_library_page import RomLibraryPage
 from .pages.root_page import RootPage
+from .pages.scripting_page import ScriptingPage
+from .pages.service_manager_page import ServiceManagerPage
 from .pages.settings_page import SettingsPage
 from .pages.terminal_page import TerminalPage
+from .pages.theme_studio_page import ThemeStudioPage
+from .pages.workflow_page import WorkflowPage
 from .panels.ai_assistant_panel import AIAssistantPanel
 from .sidebar import Sidebar
 from .status_bar import AppStatusBar
+from .system_tray import CyberFlashTrayIcon
 from .themes.theme_engine import THEMES, ThemeEngine
 from .title_bar import TitleBar
 from .widgets.resize_grip import ResizableFramelessMixin
@@ -118,6 +133,9 @@ class FramelessMainWindow(ResizableFramelessMixin, QMainWindow):
         # Create the AI assistant service
         self._ai_service = AIService(self)
 
+        # Create the ROM discovery service
+        self._rom_discovery_service = RomDiscoveryService(self._ai_service, self)
+
         self._setup_ui()
         self._setup_pages()
         self._connect_device_service()
@@ -127,6 +145,31 @@ class FramelessMainWindow(ResizableFramelessMixin, QMainWindow):
         self._device_service.start()
         self._rom_link_service.start()
         self._ai_service.start()
+        self._rom_discovery_service.start()
+
+        # Auto-discover on startup if configured
+        if ConfigService.instance().get_bool("discovery/auto_start"):
+            self._rom_discovery_service.discover_all()
+
+        # System tray icon
+        self._tray = CyberFlashTrayIcon(self._device_service, self)
+        self._tray.show()
+
+        # Register keyboard shortcuts
+        _sc = ShortcutService.instance()
+        _sc.load_bindings()
+        _sc.register("navigate_dashboard",   lambda: self.navigate_to("dashboard"),   self)
+        _sc.register("navigate_flash",       lambda: self.navigate_to("flash"),        self)
+        _sc.register("navigate_root",        lambda: self.navigate_to("root"),         self)
+        _sc.register("navigate_backup",      lambda: self.navigate_to("backup"),       self)
+        _sc.register("navigate_diagnostics", lambda: self.navigate_to("diagnostics"),  self)
+        _sc.register("navigate_settings",    lambda: self.navigate_to("settings"),     self)
+        _sc.register("refresh_devices",      self._device_service.refresh,             self)
+        _sc.register("toggle_sidebar",       self._sidebar._toggle_collapse,           self)
+        _sc.register("open_terminal",        lambda: self.navigate_to("terminal"),     self)
+        _sc.register("open_journal",         lambda: self.navigate_to("rom_library"),  self)
+        _sc.register("start_flash",          lambda: self.navigate_to("flash"),        self)
+        _sc.register("show_shortcuts",       self._show_shortcuts_cheatsheet,          self)
 
     def _setup_ui(self) -> None:
         central = _CyberCentralWidget(self)
@@ -171,21 +214,48 @@ class FramelessMainWindow(ResizableFramelessMixin, QMainWindow):
     def _setup_pages(self) -> None:
         svc = self._device_service
         ai = self._ai_service
+        disc = self._rom_discovery_service
+
         rom_page = RomLibraryPage()
         rom_page.set_service(self._rom_link_service)
+        rom_page.set_discovery_service(disc)
+
+        flash_page = FlashPage(svc, ai_service=ai)
+        flash_page.set_discovery_service(disc)
+
+        settings_page = SettingsPage()
+        settings_page.set_discovery_service(disc)
+
+        privacy_page = PrivacyScannerPage()
+        privacy_page.set_service(svc)
+
+        batch_page = BatchPage()
+        batch_page.set_service(svc)
+
         self._pages: dict[str, QWidget] = {
-            "dashboard": DashboardPage(svc),
-            "device": DevicePage(svc, ai_service=ai),
-            "flash": FlashPage(svc, ai_service=ai),
-            "rom_library": rom_page,
-            "backup": BackupPage(svc, ai_service=ai),
-            "root": RootPage(svc, ai_service=ai),
-            "nethunter": NetHunterPage(svc),
-            "partition": PartitionPage(svc, ai_service=ai),
-            "terminal": TerminalPage(svc),
-            "diagnostics": DiagnosticsPage(svc, ai_service=ai),
-            "rescue": RescuePage(svc),
-            "settings": SettingsPage(),
+            "dashboard":        DashboardPage(svc),
+            "device":           DevicePage(svc, ai_service=ai),
+            "fleet":            FleetDashboardPage(svc),
+            "flash":            flash_page,
+            "rom_library":      rom_page,
+            "backup":           BackupPage(svc, ai_service=ai),
+            "root":             RootPage(svc, ai_service=ai),
+            "magisk_modules":   MagiskModulesPage(),
+            "nethunter":        NetHunterPage(svc),
+            "app_manager":      AppManagerPage(),
+            "file_manager":     FileManagerPage(),
+            "prop_editor":      PropEditorPage(),
+            "privacy":          privacy_page,
+            "batch":            batch_page,
+            "workflow":         WorkflowPage(svc),
+            "scripting":        ScriptingPage(svc),
+            "partition":        PartitionPage(svc, ai_service=ai),
+            "terminal":         TerminalPage(svc),
+            "service_manager":  ServiceManagerPage(svc),
+            "diagnostics":      DiagnosticsPage(svc, ai_service=ai),
+            "rescue":           RescuePage(svc),
+            "theme_studio":     ThemeStudioPage(),
+            "settings":         settings_page,
         }
         for page in self._pages.values():
             self._stack.addWidget(page)
@@ -302,7 +372,16 @@ class FramelessMainWindow(ResizableFramelessMixin, QMainWindow):
         """Toggle the AI assistant panel open/closed."""
         self._ai_panel.toggle()
 
+    def _show_shortcuts_cheatsheet(self) -> None:
+        from PySide6.QtWidgets import QMessageBox
+
+        rows = ShortcutService.instance().get_cheatsheet()
+        body = "\n".join(f"{key:<20} {desc}" for key, desc in rows)
+        QMessageBox.information(self, "Keyboard Shortcuts", body)
+
     def closeEvent(self, event: QCloseEvent) -> None:
+        self._tray.hide()
+        self._rom_discovery_service.stop()
         self._ai_service.stop()
         self._rom_link_service.stop()
         self._device_service.stop()

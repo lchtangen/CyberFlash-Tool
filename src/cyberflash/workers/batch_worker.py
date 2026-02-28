@@ -176,7 +176,7 @@ class BatchWorker(BaseWorker):
             thread.start()
 
         # Wait for all threads
-        for serial, thread in self._threads.items():
+        for _serial, thread in self._threads.items():
             thread.wait(30_000)  # max 30s per device
 
     def _on_task_done(self, serial: str, success: bool) -> None:

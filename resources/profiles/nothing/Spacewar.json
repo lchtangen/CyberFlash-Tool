@@ -1,0 +1,63 @@
+{
+  "codename": "Spacewar",
+  "name": "Nothing Phone 2",
+  "brand": "Nothing",
+  "model": "A065",
+  "model_variants": ["A065"],
+  "chipset": "Snapdragon 8+ Gen 1",
+  "ab_slots": true,
+  "bootloader": {
+    "unlock_command": "fastboot flashing unlock",
+    "requires_oem_unlock_menu": true,
+    "warn_data_wipe": true
+  },
+  "flash": {
+    "method": "fastboot",
+    "partitions": [
+      "abl",
+      "aop",
+      "boot",
+      "dtbo",
+      "init_boot",
+      "modem",
+      "odm",
+      "product",
+      "system",
+      "system_ext",
+      "vbmeta",
+      "vbmeta_system",
+      "vendor",
+      "vendor_boot",
+      "vendor_dlkm"
+    ],
+    "erase_partitions": [
+      "boot",
+      "dtbo",
+      "vbmeta",
+      "system",
+      "vendor"
+    ],
+    "vbmeta_partition": "vbmeta",
+    "vbmeta_disable_flags": "--disable-verity --disable-verification"
+  },
+  "recoveries": [
+    {
+      "name": "OrangeFox",
+      "filename_pattern": "OrangeFox-*-Spacewar*.img",
+      "flash_partition": "recovery"
+    },
+    {
+      "name": "TWRP",
+      "filename_pattern": "twrp-*-Spacewar*.img",
+      "flash_partition": "recovery"
+    }
+  ],
+  "wipe_partitions": {
+    "dalvik": null,
+    "cache": "cache",
+    "data": "userdata",
+    "system": "system",
+    "vendor": "vendor"
+  },
+  "notes": "1. Enable 'OEM Unlocking' in Settings > Developer Options.\n2. Nothing Phone 2 codename is 'Spacewar' (capital S) — use this exactly in fastboot commands.\n3. Bootloader unlock WILL wipe all user data — back up first.\n4. For A/B devices, CyberFlash flashes the inactive slot and then sets it as active.\n5. Nothing OS is based on Android with a relatively clean AOSP base; LineageOS support is available."
+}

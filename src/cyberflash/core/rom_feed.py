@@ -37,6 +37,8 @@ class RomDistro(StrEnum):
     E_FOUNDATION = "efoundation"
     EVOLUTION_X = "evolutionx"
     NAMELESS_AOSP = "nameless"
+    IODE = "iodeos"
+    DIVESTOS = "divestos"
 
 
 # ── Dataclasses ──────────────────────────────────────────────────────────────
@@ -302,6 +304,80 @@ class RomFeed:
         cls._set_cache(cache_key, releases)
         return releases
 
+    @classmethod
+    def _fetch_iodeos(cls, device: str) -> list[RomRelease]:
+        """Parse IodéOS builds API."""
+        url = "https://gitlab.com/iode/os/public-api/-/raw/main/builds.json"
+        cache_key = "iodeos:all"
+        cached = cls._get_cached(cache_key)
+        raw_data: object
+        if cached is not None:
+            raw_data = cached
+        else:
+            raw_data = _fetch_json(url)
+            cls._set_cache(cache_key, raw_data)
+
+        releases: list[RomRelease] = []
+        if not isinstance(raw_data, list):
+            logger.debug("IodéOS: unexpected response type for %s", device)
+            return releases
+
+        for item in raw_data:
+            if not isinstance(item, dict):
+                continue
+            if item.get("device", "") != device:
+                continue
+            release = RomRelease(
+                distro=RomDistro.IODE,
+                device=device,
+                version=str(item.get("version", "")),
+                android_ver=str(item.get("android_version", "")),
+                security_patch=str(item.get("security_patch", "")),
+                url=str(item.get("url", "")),
+                size_bytes=int(item.get("size", 0)),
+                sha256=str(item.get("sha256", "")),
+                build_date=str(item.get("date", "")),
+                changelog_url=str(item.get("changelog", "")),
+            )
+            releases.append(release)
+
+        return releases
+
+    @classmethod
+    def _fetch_divestos(cls, device: str) -> list[RomRelease]:
+        """Parse DivestOS builds listing."""
+        url = f"https://divestos.org/builds/full/{device}/builds.json"
+        cache_key = f"divestos:{device}"
+        cached = cls._get_cached(cache_key)
+        if cached is not None:
+            return cached  # type: ignore[return-value]
+
+        data = _fetch_json(url)
+        releases: list[RomRelease] = []
+        if not isinstance(data, list):
+            logger.debug("DivestOS: no builds found for %s", device)
+            cls._set_cache(cache_key, releases)
+            return releases
+
+        for item in data:
+            if not isinstance(item, dict):
+                continue
+            release = RomRelease(
+                distro=RomDistro.DIVESTOS,
+                device=device,
+                version=str(item.get("version", "")),
+                android_ver=str(item.get("android_version", "")),
+                security_patch=str(item.get("security_patch", "")),
+                url=str(item.get("url", "")),
+                size_bytes=int(item.get("size", 0)),
+                sha256=str(item.get("sha256", "")),
+                build_date=str(item.get("date", "")),
+            )
+            releases.append(release)
+
+        cls._set_cache(cache_key, releases)
+        return releases
+
     # ── Public API ────────────────────────────────────────────────────────────
 
     @classmethod
@@ -334,6 +410,10 @@ class RomFeed:
                     releases = cls._parse_generic_github(
                         "Nameless-AOSP", "manifest", distro, device_codename
                     )
+                case RomDistro.IODE:
+                    releases = cls._fetch_iodeos(device_codename)
+                case RomDistro.DIVESTOS:
+                    releases = cls._fetch_divestos(device_codename)
                 case _:
                     releases = []
         except Exception as exc:

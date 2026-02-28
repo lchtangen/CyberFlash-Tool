@@ -1,0 +1,45 @@
+{
+  "codename": "a54x",
+  "name": "Galaxy A54 5G",
+  "brand": "Samsung",
+  "model": "SM-A546B",
+  "model_variants": ["SM-A546B", "SM-A546E", "SM-A546U"],
+  "chipset": "Exynos 1380",
+  "ab_slots": false,
+  "bootloader": {
+    "unlock_command": "heimdall flash",
+    "requires_oem_unlock_menu": true,
+    "warn_data_wipe": true
+  },
+  "flash": {
+    "method": "sideload",
+    "partitions": [
+      "AP",
+      "BL",
+      "CP",
+      "CSC"
+    ],
+    "erase_partitions": [
+      "userdata",
+      "cache"
+    ],
+    "vbmeta_partition": null,
+    "vbmeta_disable_flags": null
+  },
+  "recoveries": [
+    {
+      "name": "TWRP",
+      "filename_pattern": "twrp-*-a54x*.img",
+      "flash_partition": "recovery"
+    }
+  ],
+  "wipe_partitions": {
+    "dalvik": null,
+    "cache": "cache",
+    "data": "userdata",
+    "system": "system",
+    "vendor": "vendor"
+  },
+  "notes": "1. Enable 'OEM Unlocking' in Settings > Developer Options.\n2. Galaxy A54 5G uses Exynos 1380; flash via Odin or heimdall.\n3. The SM-A546U (US carrier) variant typically has a locked bootloader.\n4. Use Download Mode (Vol Down + USB on power off) for Odin/heimdall flashing.\n5. A54 5G uses a single-slot partition layout.",
+  "edl": null
+}

@@ -32,6 +32,7 @@ from cyberflash.ui.widgets.cyber_card import CyberCard
 from cyberflash.utils.platform_utils import get_app_data_dir, get_tools_dir
 from cyberflash.workers.adb_log_worker import AdbLogWorker
 from cyberflash.workers.diagnostics_worker import DiagnosticsWorker
+from cyberflash.workers.integrity_worker import AttestationReport, IntegrityResult, IntegrityWorker
 
 logger = logging.getLogger(__name__)
 
@@ -366,6 +367,107 @@ class _AppLogsTab(QWidget):
             self._log_output.setPlainText(f"Error reading log: {exc}")
 
 
+# ── Play Integrity tab ───────────────────────────────────────────────────────
+
+
+class _IntegrityTab(QWidget):
+    """Play Integrity / SafetyNet attestation check UI."""
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self._serial: str = ""
+        self._thread: QThread | None = None
+        self._worker: IntegrityWorker | None = None
+
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(10)
+
+        toolbar = QHBoxLayout()
+        self._run_btn = QPushButton("Run Integrity Check")
+        self._run_btn.setObjectName("primaryButton")
+        self._run_btn.setEnabled(False)
+        self._run_btn.clicked.connect(self._run_check)
+        toolbar.addWidget(self._run_btn)
+        toolbar.addStretch()
+        layout.addLayout(toolbar)
+
+        # Badge rows for each tier
+        tiers_layout = QGridLayout()
+        tiers_layout.setSpacing(8)
+
+        self._badges: dict[str, CyberBadge] = {}
+        for row_idx, tier_name in enumerate(("BASIC", "DEVICE", "STRONG")):
+            lbl = QLabel(tier_name)
+            lbl.setObjectName("kvKey")
+            badge = CyberBadge("—", "neutral")
+            self._badges[tier_name] = badge
+            tiers_layout.addWidget(lbl, row_idx, 0)
+            tiers_layout.addWidget(badge, row_idx, 1)
+        layout.addLayout(tiers_layout)
+
+        # Suggestions / raw output
+        self._suggestions = QPlainTextEdit()
+        self._suggestions.setObjectName("terminalOutput")
+        self._suggestions.setReadOnly(True)
+        self._suggestions.setMaximumHeight(150)
+        layout.addWidget(self._suggestions)
+        layout.addStretch()
+
+    def set_serial(self, serial: str) -> None:
+        self._serial = serial
+        self._run_btn.setEnabled(bool(serial))
+
+    def _run_check(self) -> None:
+        if not self._serial:
+            return
+        self._run_btn.setEnabled(False)
+        self._suggestions.setPlainText("Running integrity check…")
+        for badge in self._badges.values():
+            badge.set_text_and_variant("…", "neutral")
+
+        self._worker = IntegrityWorker(self._serial)
+        self._thread = QThread(self)
+        self._worker.moveToThread(self._thread)
+        self._thread.started.connect(self._worker.start)
+        self._worker.result_ready.connect(self._on_result)
+        self._worker.finished.connect(self._thread.quit)
+        self._worker.finished.connect(self._worker.deleteLater)
+        self._thread.finished.connect(self._thread.deleteLater)
+        self._thread.start()
+
+    @Slot(object)
+    def _on_result(self, report: object) -> None:
+        self._run_btn.setEnabled(bool(self._serial))
+        if not isinstance(report, AttestationReport):
+            return
+
+        _variant_map = {
+            IntegrityResult.PASS:    "success",
+            IntegrityResult.FAIL:    "error",
+            IntegrityResult.UNKNOWN: "neutral",
+        }
+        for tier_result in report.tiers:
+            badge = self._badges.get(tier_result.tier.upper())
+            if badge:
+                variant = _variant_map.get(tier_result.result, "neutral")
+                badge.set_text_and_variant(tier_result.result.upper(), variant)
+
+        lines: list[str] = []
+        if report.error:
+            lines.append(f"Error: {report.error}")
+        if report.suggestions:
+            lines.append("Suggestions:")
+            lines.extend(f"  • {s}" for s in report.suggestions)
+        if report.raw_output:
+            lines.append("\nRaw output:")
+            lines.append(report.raw_output)
+        self._suggestions.setPlainText("\n".join(lines))
+
+        self._worker = None
+        self._thread = None
+
+
 # ── Main page ────────────────────────────────────────────────────────────────
 
 
@@ -426,8 +528,10 @@ class DiagnosticsPage(QWidget):
         tabs = QTabWidget()
         self._logcat_tab = _LogViewerTab()
         self._app_logs_tab = _AppLogsTab()
+        self._integrity_tab = _IntegrityTab()
         tabs.addTab(self._logcat_tab, "Device Logcat")
         tabs.addTab(self._app_logs_tab, "Application Logs")
+        tabs.addTab(self._integrity_tab, "Play Integrity")
         root.addWidget(tabs, stretch=1)
 
         # Auto-run env checks on load
@@ -442,6 +546,7 @@ class DiagnosticsPage(QWidget):
             self._device_badge.set_text_and_variant(f"\u2713 {name}", "success")
             self._health_card._health_badge.set_text_and_variant("Scanning\u2026", "info")
             self._logcat_tab.set_serial(serial)
+            self._integrity_tab.set_serial(serial)
             if serial:
                 self._run_diagnostics(serial)
         else:

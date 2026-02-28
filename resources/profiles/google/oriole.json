@@ -1,0 +1,59 @@
+{
+  "codename": "oriole",
+  "name": "Pixel 6",
+  "brand": "Google",
+  "model": "GA02H",
+  "model_variants": ["GA02H", "GB7N6"],
+  "chipset": "Tensor G1",
+  "ab_slots": true,
+  "bootloader": {
+    "unlock_command": "fastboot flashing unlock",
+    "requires_oem_unlock_menu": true,
+    "warn_data_wipe": true
+  },
+  "flash": {
+    "method": "fastboot",
+    "partitions": [
+      "boot",
+      "dtbo",
+      "init_boot",
+      "product",
+      "system",
+      "system_ext",
+      "vbmeta",
+      "vbmeta_system",
+      "vendor",
+      "vendor_boot",
+      "vendor_dlkm"
+    ],
+    "erase_partitions": [
+      "boot",
+      "dtbo",
+      "vbmeta",
+      "system",
+      "vendor"
+    ],
+    "vbmeta_partition": "vbmeta",
+    "vbmeta_disable_flags": "--disable-verity --disable-verification"
+  },
+  "recoveries": [
+    {
+      "name": "OrangeFox",
+      "filename_pattern": "OrangeFox-*-oriole*.img",
+      "flash_partition": "recovery"
+    },
+    {
+      "name": "TWRP",
+      "filename_pattern": "twrp-*-oriole*.img",
+      "flash_partition": "recovery"
+    }
+  ],
+  "wipe_partitions": {
+    "dalvik": null,
+    "cache": "cache",
+    "data": "userdata",
+    "system": "system",
+    "vendor": "vendor"
+  },
+  "notes": "1. Enable 'OEM Unlocking' in Settings > Developer Options before unlocking bootloader.\n2. Use 'fastboot flashing unlock' (not 'oem unlock') for Pixel 6 and newer.\n3. Bootloader unlock WILL wipe all user data — back up first.\n4. Google Tensor devices do not support EDL mode; use fastboot for all recovery operations.\n5. For A/B devices, CyberFlash flashes the inactive slot and then sets it as active."
+}

@@ -70,7 +70,7 @@ class TrackingSDK:
 
     name: str
     package_hint: str
-    risk_level: int          # 1 (low) – 5 (high)
+    risk_level: int          # 1 (low) - 5 (high)
 
 
 @dataclass

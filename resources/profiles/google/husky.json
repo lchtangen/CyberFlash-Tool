@@ -1,0 +1,59 @@
+{
+  "codename": "husky",
+  "name": "Pixel 8 Pro",
+  "brand": "Google",
+  "model": "GP4BC",
+  "model_variants": ["GP4BC", "GC3VE"],
+  "chipset": "Tensor G3",
+  "ab_slots": true,
+  "bootloader": {
+    "unlock_command": "fastboot flashing unlock",
+    "requires_oem_unlock_menu": true,
+    "warn_data_wipe": true
+  },
+  "flash": {
+    "method": "fastboot",
+    "partitions": [
+      "boot",
+      "dtbo",
+      "init_boot",
+      "product",
+      "system",
+      "system_ext",
+      "vbmeta",
+      "vbmeta_system",
+      "vendor",
+      "vendor_boot",
+      "vendor_dlkm"
+    ],
+    "erase_partitions": [
+      "boot",
+      "dtbo",
+      "vbmeta",
+      "system",
+      "vendor"
+    ],
+    "vbmeta_partition": "vbmeta",
+    "vbmeta_disable_flags": "--disable-verity --disable-verification"
+  },
+  "recoveries": [
+    {
+      "name": "OrangeFox",
+      "filename_pattern": "OrangeFox-*-husky*.img",
+      "flash_partition": "recovery"
+    },
+    {
+      "name": "TWRP",
+      "filename_pattern": "twrp-*-husky*.img",
+      "flash_partition": "recovery"
+    }
+  ],
+  "wipe_partitions": {
+    "dalvik": null,
+    "cache": "cache",
+    "data": "userdata",
+    "system": "system",
+    "vendor": "vendor"
+  },
+  "notes": "1. Enable 'OEM Unlocking' in Settings > Developer Options before unlocking bootloader.\n2. Use 'fastboot flashing unlock' for Pixel 8 Pro.\n3. Bootloader unlock WILL wipe all user data — back up first.\n4. Google Tensor G3 devices do not support EDL mode; use fastboot for all recovery operations.\n5. For A/B devices, CyberFlash flashes the inactive slot and then sets it as active."
+}

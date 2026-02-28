@@ -1,0 +1,1284 @@
+/* CyberFlash — Cyber Green Theme
+   Tokens like {BACKGROUND} are substituted at runtime by ThemeEngine */
+
+/* ── Global ─────────────────────────────────────────────────────────────── */
+QMainWindow {{
+    background-color: {BACKGROUND};
+    color: {TEXT_PRIMARY};
+    font-family: "Segoe UI", "SF Pro Display", "Ubuntu", sans-serif;
+    font-size: 13px;
+}}
+
+QWidget {{
+    background-color: {BACKGROUND};
+    color: {TEXT_PRIMARY};
+    font-family: "Segoe UI", "SF Pro Display", "Ubuntu", sans-serif;
+    font-size: 13px;
+}}
+
+QWidget#centralWidget {{
+    background-color: {BACKGROUND};
+}}
+
+/* ── QPushButton ─────────────────────────────────────────────────────────── */
+QPushButton {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 6px 14px;
+    min-height: 28px;
+}}
+
+QPushButton:hover {{
+    background-color: {PRIMARY};
+    color: {BACKGROUND};
+    border-color: {PRIMARY};
+}}
+
+QPushButton:pressed {{
+    background-color: {PRIMARY_HOVER};
+    color: {BACKGROUND};
+}}
+
+QPushButton:disabled {{
+    background-color: {SURFACE};
+    color: {TEXT_DISABLED};
+    border-color: {BORDER};
+}}
+
+QPushButton#primaryButton {{
+    background-color: {PRIMARY};
+    color: {BACKGROUND};
+    border: none;
+    font-weight: bold;
+}}
+
+QPushButton#primaryButton:hover {{
+    background-color: {PRIMARY_HOVER};
+}}
+
+QPushButton#titleBarBtn {{
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    color: {TEXT_SECONDARY};
+    font-size: 14px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0px;
+}}
+
+QPushButton#titleBarBtn:hover {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+}}
+
+QPushButton#closeBtn:hover {{
+    background-color: {ERROR};
+    color: #ffffff;
+}}
+
+/* ── QComboBox ───────────────────────────────────────────────────────────── */
+QComboBox {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 4px 10px;
+    min-height: 28px;
+    min-width: 200px;
+}}
+
+QComboBox:hover {{
+    border-color: {PRIMARY};
+}}
+
+QComboBox::drop-down {{
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 28px;
+    border-left: 1px solid {BORDER};
+    border-radius: 0 6px 6px 0;
+}}
+
+QComboBox::down-arrow {{
+    width: 10px;
+    height: 10px;
+}}
+
+QComboBox QAbstractItemView {{
+    background-color: {SURFACE};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    selection-background-color: {PRIMARY};
+    selection-color: {BACKGROUND};
+    outline: none;
+}}
+
+/* ── QScrollBar ──────────────────────────────────────────────────────────── */
+QScrollBar:vertical {{
+    background: {SURFACE};
+    width: 6px;
+    margin: 0px;
+    border-radius: 3px;
+}}
+
+QScrollBar::handle:vertical {{
+    background: {BORDER};
+    min-height: 20px;
+    border-radius: 3px;
+}}
+
+QScrollBar::handle:vertical:hover {{
+    background: {TEXT_SECONDARY};
+}}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {{
+    height: 0px;
+}}
+
+QScrollBar:horizontal {{
+    background: {SURFACE};
+    height: 6px;
+    margin: 0px;
+    border-radius: 3px;
+}}
+
+QScrollBar::handle:horizontal {{
+    background: {BORDER};
+    min-width: 20px;
+    border-radius: 3px;
+}}
+
+QScrollBar::handle:horizontal:hover {{
+    background: {TEXT_SECONDARY};
+}}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {{
+    width: 0px;
+}}
+
+/* ── QLabel ──────────────────────────────────────────────────────────────── */
+QLabel {{
+    color: {TEXT_PRIMARY};
+    background-color: transparent;
+}}
+
+QLabel#secondaryLabel {{
+    color: {TEXT_SECONDARY};
+}}
+
+QLabel#titleLabel {{
+    font-size: 20px;
+    font-weight: bold;
+    color: {TEXT_PRIMARY};
+}}
+
+QLabel#subtitleLabel {{
+    font-size: 13px;
+    color: {TEXT_SECONDARY};
+}}
+
+/* ── QToolTip ────────────────────────────────────────────────────────────── */
+QToolTip {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+}}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+QWidget#sidebar {{
+    background-color: {SURFACE};
+    border-right: 1px solid {BORDER};
+}}
+
+QPushButton#sidebarItem {{
+    background-color: transparent;
+    color: {TEXT_SECONDARY};
+    border: none;
+    border-radius: 6px;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 13px;
+}}
+
+QPushButton#sidebarItem:hover {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+}}
+
+QPushButton#sidebarItem[active="true"] {{
+    background-color: {SURFACE_2};
+    color: {PRIMARY};
+    border-left: 3px solid {PRIMARY};
+}}
+
+QPushButton#sidebarToggle {{
+    background-color: transparent;
+    border: none;
+    color: {TEXT_SECONDARY};
+    padding: 8px;
+}}
+
+QPushButton#sidebarToggle:hover {{
+    color: {TEXT_PRIMARY};
+    background-color: {SURFACE_2};
+    border-radius: 6px;
+}}
+
+/* ── Title Bar ───────────────────────────────────────────────────────────── */
+QWidget#titleBar {{
+    background-color: {SURFACE};
+    border-bottom: 1px solid {BORDER};
+}}
+
+QWidget#titleBar QLabel {{
+    font-weight: bold;
+    font-size: 14px;
+    color: {TEXT_PRIMARY};
+}}
+
+/* ── Status Bar ──────────────────────────────────────────────────────────── */
+QWidget#statusBar {{
+    background-color: {SURFACE};
+    border-top: 1px solid {BORDER};
+}}
+
+/* ── CyberCard ───────────────────────────────────────────────────────────── */
+QFrame#cyberCard {{
+    background-color: {SURFACE};
+    border: 1px solid {BORDER};
+    border-radius: 8px;
+}}
+
+QFrame#cyberCard:hover {{
+    border-color: {PRIMARY};
+}}
+
+/* ── CyberBadge ──────────────────────────────────────────────────────────── */
+QLabel#cyberBadge {{
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: bold;
+}}
+
+QLabel#cyberBadge[variant="success"] {{
+    color: {SUCCESS};
+    background-color: rgba(0, 255, 65, 0.12);
+}}
+
+QLabel#cyberBadge[variant="warning"] {{
+    color: {WARNING};
+    background-color: rgba(255, 170, 0, 0.12);
+}}
+
+QLabel#cyberBadge[variant="error"] {{
+    color: {ERROR};
+    background-color: rgba(255, 51, 51, 0.12);
+}}
+
+QLabel#cyberBadge[variant="info"] {{
+    color: {INFO};
+    background-color: rgba(0, 170, 255, 0.12);
+}}
+
+QLabel#cyberBadge[variant="neutral"] {{
+    color: {TEXT_SECONDARY};
+    background-color: {SURFACE_2};
+}}
+
+/* ── Page Content ────────────────────────────────────────────────────────── */
+QLabel#cardHeader {{
+    font-size: 13px;
+    font-weight: bold;
+    color: {TEXT_SECONDARY};
+}}
+
+QLabel#kvKey {{
+    color: {TEXT_SECONDARY};
+    font-size: 11px;
+}}
+
+QLabel#kvValue {{
+    color: {TEXT_PRIMARY};
+    font-size: 13px;
+    font-weight: bold;
+}}
+
+QLabel#emptyHint {{
+    color: {PRIMARY};
+    font-size: 12px;
+}}
+
+QLabel#emptyIcon {{
+    font-size: 48px;
+}}
+
+QLabel#serialLabel {{
+    color: {TEXT_SECONDARY};
+    font-size: 12px;
+}}
+
+QLabel#deviceName {{
+    font-size: 20px;
+    font-weight: bold;
+    color: {TEXT_PRIMARY};
+}}
+
+QFrame#separator {{
+    color: {BORDER};
+}}
+
+/* ── StatusBar Status Indicator ──────────────────────────────────────────── */
+QLabel#statusIcon[status="ready"] {{ color: {SUCCESS}; }}
+QLabel#statusIcon[status="success"] {{ color: {SUCCESS}; }}
+QLabel#statusIcon[status="working"] {{ color: {WARNING}; }}
+QLabel#statusIcon[status="error"] {{ color: {ERROR}; }}
+QLabel#statusIcon[status="info"] {{ color: {INFO}; }}
+
+/* ── QLineEdit ───────────────────────────────────────────────────────────── */
+QLineEdit {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 6px 10px;
+    min-height: 28px;
+    selection-background-color: {PRIMARY};
+    selection-color: {BACKGROUND};
+}}
+
+QLineEdit:hover {{
+    border-color: {PRIMARY};
+}}
+
+QLineEdit:focus {{
+    border-color: {PRIMARY};
+    border-width: 2px;
+}}
+
+/* ── QTextEdit / QPlainTextEdit ──────────────────────────────────────────── */
+QTextEdit,
+QPlainTextEdit {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 8px;
+    selection-background-color: {PRIMARY};
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 12px;
+}}
+
+/* ── QProgressBar ────────────────────────────────────────────────────────── */
+QProgressBar {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+    border-radius: 4px;
+    text-align: center;
+    color: {TEXT_PRIMARY};
+    min-height: 20px;
+    font-size: 11px;
+}}
+
+QProgressBar::chunk {{
+    background-color: {PRIMARY};
+    border-radius: 3px;
+}}
+
+/* ── QCheckBox / QRadioButton ────────────────────────────────────────────── */
+QCheckBox,
+QRadioButton {{
+    color: {TEXT_PRIMARY};
+    spacing: 8px;
+}}
+
+QCheckBox::indicator,
+QRadioButton::indicator {{
+    width: 18px;
+    height: 18px;
+    border: 2px solid {BORDER};
+    background-color: {SURFACE_2};
+}}
+
+QCheckBox::indicator {{
+    border-radius: 4px;
+}}
+
+QRadioButton::indicator {{
+    border-radius: 9px;
+}}
+
+QCheckBox::indicator:checked,
+QRadioButton::indicator:checked {{
+    background-color: {PRIMARY};
+    border-color: {PRIMARY};
+}}
+
+/* ── QGroupBox ───────────────────────────────────────────────────────────── */
+QGroupBox {{
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    margin-top: 14px;
+    padding-top: 14px;
+    color: {TEXT_PRIMARY};
+    font-weight: bold;
+}}
+
+QGroupBox::title {{
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 8px;
+    color: {TEXT_SECONDARY};
+}}
+
+/* ── QTabWidget ──────────────────────────────────────────────────────────── */
+QTabWidget::pane {{
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    background-color: {SURFACE};
+}}
+
+QTabBar::tab {{
+    background-color: {SURFACE_2};
+    color: {TEXT_SECONDARY};
+    border: 1px solid {BORDER};
+    border-bottom: none;
+    padding: 6px 16px;
+    margin-right: 2px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}}
+
+QTabBar::tab:selected {{
+    background-color: {SURFACE};
+    color: {PRIMARY};
+    border-bottom: 2px solid {PRIMARY};
+}}
+
+QTabBar::tab:hover:!selected {{
+    background-color: {SURFACE};
+    color: {TEXT_PRIMARY};
+}}
+
+/* ── ROM Library Page ────────────────────────────────────────────────────── */
+QLabel#pageTitle {{
+    font-size: 22px;
+    font-weight: bold;
+    color: {TEXT_PRIMARY};
+}}
+
+QLabel#pageSubtitle {{
+    font-size: 13px;
+    color: {TEXT_SECONDARY};
+    padding-left: 12px;
+}}
+
+QFrame#romStatsBar {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+    border-radius: 8px;
+}}
+
+QLabel#romStatLabel {{
+    color: {TEXT_SECONDARY};
+    font-size: 12px;
+    font-weight: bold;
+}}
+
+QLineEdit#romUrlInput {{
+    min-height: 32px;
+    font-size: 13px;
+}}
+
+QPushButton#romAddBtn {{
+    background-color: {PRIMARY};
+    color: {BACKGROUND};
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+    min-height: 32px;
+    font-size: 13px;
+}}
+
+QPushButton#romAddBtn:hover {{
+    background-color: {PRIMARY_HOVER};
+}}
+
+QPushButton#romAddBtn:pressed {{
+    background-color: {PRIMARY};
+    padding-top: 10px;
+}}
+
+QLabel#romSourceDomain {{
+    font-size: 15px;
+    font-weight: bold;
+    color: {TEXT_PRIMARY};
+}}
+
+QLabel#romSourceUrl {{
+    font-size: 11px;
+    color: {TEXT_SECONDARY};
+}}
+
+QLabel#romSourceMeta {{
+    font-size: 11px;
+    color: {TEXT_DISABLED};
+}}
+
+QLabel#romTrustGrade {{
+    font-size: 18px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: {TEXT_PRIMARY};
+}}
+
+QLabel#romTrustGrade[grade="A"] {{
+    color: {SUCCESS};
+    background-color: rgba(0, 255, 65, 0.12);
+}}
+
+QLabel#romTrustGrade[grade="B"] {{
+    color: {INFO};
+    background-color: rgba(0, 170, 255, 0.12);
+}}
+
+QLabel#romTrustGrade[grade="C"] {{
+    color: {WARNING};
+    background-color: rgba(255, 170, 0, 0.12);
+}}
+
+QLabel#romTrustGrade[grade="D"] {{
+    color: {ERROR};
+    background-color: rgba(255, 51, 51, 0.08);
+}}
+
+QLabel#romTrustGrade[grade="F"] {{
+    color: {ERROR};
+    background-color: rgba(255, 51, 51, 0.18);
+}}
+
+QLabel#romDimLabel {{
+    font-size: 10px;
+    color: {TEXT_DISABLED};
+}}
+
+QProgressBar#romTrustBar {{
+    background-color: {SURFACE_2};
+    border: none;
+    border-radius: 3px;
+    min-height: 6px;
+    max-height: 6px;
+}}
+
+QProgressBar#romTrustBar::chunk {{
+    background-color: {PRIMARY};
+    border-radius: 3px;
+}}
+
+QPushButton#romRemoveBtn {{
+    background-color: transparent;
+    color: {TEXT_DISABLED};
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+}}
+
+QPushButton#romRemoveBtn:hover {{
+    color: {ERROR};
+    background-color: rgba(255, 51, 51, 0.12);
+}}
+
+QLabel#romWarningLabel {{
+    color: {WARNING};
+    font-size: 11px;
+    padding: 4px 8px;
+    background-color: rgba(255, 170, 0, 0.08);
+    border-radius: 4px;
+}}
+
+QScrollArea#romSourceScroll {{
+    background-color: transparent;
+    border: none;
+}}
+
+/* ── Danger Button ───────────────────────────────────────────────────────── */
+QPushButton#dangerButton {{
+    background-color: transparent;
+    color: {ERROR};
+    border: 1px solid {ERROR};
+    border-radius: 6px;
+    padding: 6px 14px;
+    min-height: 28px;
+    font-weight: bold;
+}}
+
+QPushButton#dangerButton:hover {{
+    background-color: {ERROR};
+    color: #ffffff;
+}}
+
+QPushButton#dangerButton:pressed {{
+    background-color: #cc1111;
+    color: #ffffff;
+}}
+
+/* ── Terminal Page ───────────────────────────────────────────────────────── */
+QPlainTextEdit#terminalOutput {{
+    background-color: #000000;
+    color: {PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 10px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 12px;
+    selection-background-color: {PRIMARY};
+    selection-color: {BACKGROUND};
+}}
+
+QLineEdit#terminalInput {{
+    background-color: #000000;
+    color: {PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 12px;
+    min-height: 28px;
+}}
+
+QLineEdit#terminalInput:focus {{
+    border-color: {PRIMARY};
+    border-width: 2px;
+}}
+
+QLabel#terminalPrompt {{
+    color: {PRIMARY};
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 14px;
+    font-weight: bold;
+}}
+
+/* ── Backup Type Icon ────────────────────────────────────────────────────── */
+QLabel#backupTypeIcon {{
+    font-size: 24px;
+}}
+
+/* ── QTableWidget (Partition Manager) ────────────────────────────────────── */
+QTableWidget {{
+    background-color: {SURFACE};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    gridline-color: {BORDER};
+    selection-background-color: {PRIMARY};
+    selection-color: {BACKGROUND};
+    font-size: 12px;
+}}
+
+QTableWidget::item {{
+    padding: 4px 8px;
+}}
+
+QTableWidget::item:alternate {{
+    background-color: {SURFACE_2};
+}}
+
+QHeaderView::section {{
+    background-color: {SURFACE_2};
+    color: {TEXT_SECONDARY};
+    border: 1px solid {BORDER};
+    padding: 6px 8px;
+    font-weight: bold;
+    font-size: 11px;
+}}
+
+/* ── QSlider (Settings) ──────────────────────────────────────────────────── */
+QSlider::groove:horizontal {{
+    border: none;
+    height: 6px;
+    background-color: {SURFACE_2};
+    border-radius: 3px;
+}}
+
+QSlider::handle:horizontal {{
+    background-color: {PRIMARY};
+    border: none;
+    width: 16px;
+    height: 16px;
+    margin: -5px 0;
+    border-radius: 8px;
+}}
+
+QSlider::handle:horizontal:hover {{
+    background-color: {PRIMARY_HOVER};
+}}
+
+QSlider::sub-page:horizontal {{
+    background-color: {PRIMARY};
+    border-radius: 3px;
+}}
+
+/* ── QSpinBox (Settings) ─────────────────────────────────────────────────── */
+QSpinBox {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 4px 8px;
+    min-height: 28px;
+    min-width: 80px;
+}}
+
+QSpinBox:hover {{
+    border-color: {PRIMARY};
+}}
+
+QSpinBox::up-button,
+QSpinBox::down-button {{
+    background-color: transparent;
+    border: none;
+    width: 20px;
+}}
+
+/* ── Phase 4: cyberpunk background transparency ── */
+QStackedWidget {{
+    background: transparent;
+}}
+
+QWidget#pageRoot {{
+    background: transparent;
+}}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   AI ASSISTANT PANEL
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Panel container */
+QWidget#aiAssistantPanel {{
+    background-color: {SURFACE};
+    border-left: 1px solid {BORDER};
+}}
+
+/* Panel header */
+QWidget#aiPanelHeader {{
+    background-color: {SURFACE_2};
+    border-bottom: 1px solid {BORDER};
+}}
+
+QLabel#aiPanelIcon {{
+    font-size: 18px;
+    padding-right: 4px;
+}}
+
+QLabel#aiPanelTitle {{
+    color: {PRIMARY};
+    font-size: 14px;
+    font-weight: bold;
+}}
+
+QLabel#aiPrivacyBadge {{
+    background-color: {SURFACE_2};
+    color: {SUCCESS};
+    border: 1px solid {SUCCESS};
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 9px;
+    font-weight: bold;
+}}
+
+QPushButton#aiPanelClose {{
+    background: transparent;
+    color: {TEXT_SECONDARY};
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}}
+
+QPushButton#aiPanelClose:hover {{
+    background-color: {ERROR};
+    color: {TEXT_PRIMARY};
+}}
+
+/* AI toggle button in title bar */
+QPushButton#aiToggleBtn {{
+    background-color: {SURFACE_2};
+    color: {PRIMARY};
+    border: 1px solid {PRIMARY};
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+}}
+
+QPushButton#aiToggleBtn:hover {{
+    background-color: {PRIMARY};
+    color: {BACKGROUND};
+}}
+
+/* AI tabs */
+QTabWidget#aiTabs::pane {{
+    background-color: {SURFACE};
+    border: none;
+    border-top: 1px solid {BORDER};
+}}
+
+QTabWidget#aiTabs > QTabBar::tab {{
+    background-color: {SURFACE_2};
+    color: {TEXT_SECONDARY};
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 6px 16px;
+    font-size: 12px;
+}}
+
+QTabWidget#aiTabs > QTabBar::tab:selected {{
+    color: {PRIMARY};
+    border-bottom: 2px solid {PRIMARY};
+    background-color: {SURFACE};
+}}
+
+QTabWidget#aiTabs > QTabBar::tab:hover {{
+    color: {TEXT_PRIMARY};
+    background-color: {SURFACE};
+}}
+
+/* Chat scroll area */
+QScrollArea#aiChatScroll {{
+    background: transparent;
+    border: none;
+}}
+
+QWidget#aiChatContainer {{
+    background: transparent;
+}}
+
+/* Chat bubbles */
+QLabel#chatRoleLabel {{
+    font-size: 11px;
+    font-weight: bold;
+}}
+
+QLabel#chatRoleLabel[role="user"] {{
+    color: {PRIMARY};
+}}
+
+QLabel#chatRoleLabel[role="ai"] {{
+    color: {SUCCESS};
+}}
+
+QLabel#chatRoleLabel[role="system"] {{
+    color: {WARNING};
+}}
+
+QLabel#chatTimestamp {{
+    color: {TEXT_DISABLED};
+    font-size: 10px;
+}}
+
+QLabel#chatBubbleBody {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.4;
+}}
+
+QLabel#chatBubbleBody[role="user"] {{
+    background-color: rgba(0, 255, 65, 0.07);
+    border: 1px solid rgba(0, 255, 65, 0.18);
+}}
+
+QLabel#chatBubbleBody[role="ai"] {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+}}
+
+QLabel#chatBubbleBody[role="system"] {{
+    background-color: rgba(255, 170, 0, 0.07);
+    border: 1px solid rgba(255, 170, 0, 0.18);
+    font-style: italic;
+}}
+
+/* Chat input */
+QWidget#aiInputBar {{
+    background-color: {SURFACE_2};
+    border-top: 1px solid {BORDER};
+}}
+
+QLineEdit#aiChatInput {{
+    background-color: {BACKGROUND};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+}}
+
+QLineEdit#aiChatInput:focus {{
+    border-color: {PRIMARY};
+}}
+
+QPushButton#aiSendButton {{
+    background-color: {PRIMARY};
+    color: {BACKGROUND};
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 6px;
+}}
+
+QPushButton#aiSendButton:hover {{
+    background-color: {PRIMARY_HOVER};
+}}
+
+/* Quick action bar */
+QWidget#aiQuickBar {{
+    background-color: {SURFACE};
+    border-top: 1px solid {BORDER};
+}}
+
+QPushButton#aiQuickButton {{
+    background-color: {SURFACE_2};
+    color: {TEXT_SECONDARY};
+    border: 1px solid {BORDER};
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 11px;
+}}
+
+QPushButton#aiQuickButton:hover {{
+    border-color: {PRIMARY};
+    color: {PRIMARY};
+}}
+
+/* Insight cards */
+QFrame#aiInsightCard {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    border-left: 3px solid {INFO};
+}}
+
+QFrame#aiInsightCard[severity="warning"] {{
+    border-left-color: {WARNING};
+}}
+
+QFrame#aiInsightCard[severity="critical"] {{
+    border-left-color: {ERROR};
+}}
+
+QFrame#aiInsightCard[severity="tip"] {{
+    border-left-color: {SUCCESS};
+}}
+
+QLabel#aiInsightIcon {{
+    font-size: 14px;
+}}
+
+QLabel#aiInsightTitle {{
+    color: {TEXT_PRIMARY};
+    font-weight: bold;
+    font-size: 12px;
+}}
+
+QLabel#aiInsightMessage {{
+    color: {TEXT_SECONDARY};
+    font-size: 11px;
+}}
+
+QLabel#aiInsightHint {{
+    color: {PRIMARY};
+    font-size: 11px;
+    font-style: italic;
+}}
+
+/* Health section */
+QLabel#aiHealthGrade {{
+    font-weight: bold;
+    font-size: 14px;
+    color: {SUCCESS};
+    padding: 2px 8px;
+    border: 1px solid {SUCCESS};
+    border-radius: 4px;
+}}
+
+QLabel#aiHealthGrade[grade="fair"] {{
+    color: {WARNING};
+    border-color: {WARNING};
+}}
+
+QLabel#aiHealthGrade[grade="poor"],
+QLabel#aiHealthGrade[grade="critical"] {{
+    color: {ERROR};
+    border-color: {ERROR};
+}}
+
+QProgressBar#aiHealthBar {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+    border-radius: 4px;
+    height: 16px;
+    text-align: center;
+    color: {TEXT_PRIMARY};
+    font-size: 11px;
+}}
+
+QProgressBar#aiHealthBar::chunk {{
+    background-color: {SUCCESS};
+    border-radius: 3px;
+}}
+
+QLabel#aiHealthDetails {{
+    color: {TEXT_SECONDARY};
+    font-size: 11px;
+}}
+
+/* Recommendation cards */
+QFrame#aiRecCard {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+    border-radius: 4px;
+}}
+
+QLabel#aiRecDot {{
+    font-size: 10px;
+}}
+
+QLabel#aiRecDot[risk="low"] {{
+    color: {SUCCESS};
+}}
+
+QLabel#aiRecDot[risk="medium"] {{
+    color: {WARNING};
+}}
+
+QLabel#aiRecDot[risk="high"] {{
+    color: {ERROR};
+}}
+
+QLabel#aiRecTitle {{
+    color: {TEXT_PRIMARY};
+    font-weight: bold;
+    font-size: 11px;
+}}
+
+QLabel#aiRecDesc {{
+    color: {TEXT_SECONDARY};
+    font-size: 10px;
+}}
+
+/* Workflow section */
+QLabel#aiWorkflowDesc {{
+    color: {TEXT_SECONDARY};
+    font-size: 11px;
+}}
+
+QPushButton#aiWorkflowButton {{
+    background-color: {SURFACE_2};
+    color: {TEXT_PRIMARY};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    text-align: left;
+}}
+
+QPushButton#aiWorkflowButton:hover {{
+    border-color: {PRIMARY};
+    color: {PRIMARY};
+}}
+
+QFrame#aiSeparator {{
+    color: {BORDER};
+    max-height: 1px;
+}}
+
+QProgressBar#aiWorkflowProgress {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+    border-radius: 4px;
+    height: 14px;
+    text-align: center;
+    color: {TEXT_PRIMARY};
+    font-size: 10px;
+}}
+
+QProgressBar#aiWorkflowProgress::chunk {{
+    background-color: {PRIMARY};
+    border-radius: 3px;
+}}
+
+/* Workflow step cards */
+QFrame#aiStepCard {{
+    background-color: {SURFACE_2};
+    border: 1px solid {BORDER};
+    border-radius: 4px;
+}}
+
+QLabel#aiStepIndicator {{
+    background-color: {SURFACE};
+    color: {TEXT_SECONDARY};
+    border: 1px solid {BORDER};
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}}
+
+QLabel#aiStepIndicator[completed="true"] {{
+    background-color: {SUCCESS};
+    color: {BACKGROUND};
+    border-color: {SUCCESS};
+}}
+
+QLabel#aiStepTitle {{
+    color: {TEXT_PRIMARY};
+    font-weight: bold;
+    font-size: 11px;
+}}
+
+QLabel#aiStepDesc {{
+    color: {TEXT_SECONDARY};
+    font-size: 10px;
+}}
+
+QLabel#aiStepRisk {{
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+}}
+
+QLabel#aiStepRisk[level="low"] {{
+    background-color: rgba(0, 255, 65, 0.12);
+    color: {SUCCESS};
+}}
+
+QLabel#aiStepRisk[level="medium"] {{
+    background-color: rgba(255, 170, 0, 0.12);
+    color: {WARNING};
+}}
+
+QLabel#aiStepRisk[level="high"] {{
+    background-color: rgba(255, 51, 51, 0.12);
+    color: {ERROR};
+}}
+
+QLabel#aiStepRisk[level="critical"] {{
+    background-color: rgba(255, 51, 51, 0.22);
+    color: {ERROR};
+}}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUTOMATION / EXECUTION COMPONENTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Step execute button */
+QPushButton#aiStepExecBtn {{
+    background-color: rgba(0, 255, 65, 0.12);
+    color: {PRIMARY};
+    border: 1px solid {PRIMARY};
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}}
+
+QPushButton#aiStepExecBtn:hover {{
+    background-color: rgba(0, 255, 65, 0.25);
+}}
+
+QPushButton#aiStepExecBtn:pressed {{
+    background-color: rgba(0, 255, 65, 0.4);
+}}
+
+/* Preflight check status indicators */
+QFrame#preflightCheck {{
+    background-color: {SURFACE};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 8px;
+}}
+
+QFrame#preflightCheck[status="pass"] {{
+    border-left: 3px solid {SUCCESS};
+}}
+
+QFrame#preflightCheck[status="warn"] {{
+    border-left: 3px solid {WARNING};
+}}
+
+QFrame#preflightCheck[status="fail"] {{
+    border-left: 3px solid {ERROR};
+}}
+
+QFrame#preflightCheck[status="skip"] {{
+    border-left: 3px solid {TEXT_DISABLED};
+}}
+
+/* Command result card */
+QFrame#commandResult {{
+    background-color: {SURFACE};
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    padding: 10px;
+}}
+
+QFrame#commandResult[status="completed"] {{
+    border-left: 3px solid {SUCCESS};
+}}
+
+QFrame#commandResult[status="failed"] {{
+    border-left: 3px solid {ERROR};
+}}
+
+QFrame#commandResult[status="blocked"] {{
+    border-left: 3px solid {WARNING};
+}}
+
+/* Health metrics inline display */
+QLabel#healthMetricValue {{
+    font-size: 14px;
+    font-weight: bold;
+    color: {PRIMARY};
+}}
+
+QLabel#healthMetricLabel {{
+    font-size: 10px;
+    color: {TEXT_DISABLED};
+    text-transform: uppercase;
+}}
+
+/* Automation status badge */
+QLabel#automationBadge {{
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 3px;
+}}
+
+QLabel#automationBadge[status="running"] {{
+    background-color: rgba(0, 255, 65, 0.12);
+    color: {PRIMARY};
+}}
+
+QLabel#automationBadge[status="success"] {{
+    background-color: rgba(0, 255, 65, 0.12);
+    color: {SUCCESS};
+}}
+
+QLabel#automationBadge[status="error"] {{
+    background-color: rgba(255, 51, 51, 0.12);
+    color: {ERROR};
+}}

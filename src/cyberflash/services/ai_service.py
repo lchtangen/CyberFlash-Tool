@@ -326,3 +326,10 @@ class AIService(QObject):
     @property
     def current_page(self) -> str:
         return self._current_page
+
+    @property
+    def gemini_client(self) -> object | None:
+        """Expose the GeminiClient instance from the AI worker (read-only)."""
+        if self._worker is not None:
+            return self._worker._gemini
+        return None

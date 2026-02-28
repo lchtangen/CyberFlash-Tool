@@ -211,6 +211,7 @@ class FlashPage(QWidget):
         super().__init__(parent)
         self._service = device_service
         self._ai_service = ai_service
+        self._discovery_service: object | None = None  # RomDiscoveryService
         self._current_device: DeviceInfo | None = None
         self._profile: DeviceProfile | None = None
         self._source_path: Path | None = None
@@ -292,8 +293,20 @@ class FlashPage(QWidget):
         browse_btn.setFixedWidth(80)
         browse_btn.clicked.connect(self._browse_source)
         source_row.addWidget(browse_btn)
+
+        self._catalog_btn = QPushButton("\u2605 Browse Catalog")
+        self._catalog_btn.setObjectName("primaryButton")
+        self._catalog_btn.setFixedWidth(130)
+        self._catalog_btn.clicked.connect(self._browse_catalog)
+        source_row.addWidget(self._catalog_btn)
+
         layout.addLayout(source_row)
         layout.addWidget(self._source_type_label)
+
+        self._catalog_score_label = QLabel("")
+        self._catalog_score_label.setObjectName("subtitleLabel")
+        self._catalog_score_label.setStyleSheet("font-size: 11px; margin-left: 4px;")
+        layout.addWidget(self._catalog_score_label)
 
         # ── Flash Method ──────────────────────────────────────────────────────
         layout.addWidget(self._section_label("Flash Method"))
@@ -540,6 +553,53 @@ class FlashPage(QWidget):
         """Repopulate step tracker when flash method changes."""
         if checked and self._current_device:
             self._populate_steps()
+
+    # ── Discovery service wiring ──────────────────────────────────────────────
+
+    def set_discovery_service(self, svc: object) -> None:
+        """Bind the ROM discovery service (enables Browse Catalog button)."""
+        self._discovery_service = svc
+
+    def _browse_catalog(self) -> None:
+        """Open the ROM catalog picker and populate the source field."""
+        from cyberflash.ui.dialogs.rom_select_dialog import RomSelectDialog
+
+        if self._discovery_service is None:
+            return
+
+        codename = (
+            self._current_device.codename
+            if self._current_device and self._current_device.codename
+            else ""
+        )
+        dlg = RomSelectDialog(self._discovery_service, codename, self)
+        dlg.rom_selected.connect(self._on_catalog_rom_selected)
+        dlg.exec()
+
+    @Slot(object)
+    def _on_catalog_rom_selected(self, entry: object) -> None:
+        """Populate the ROM source field from a CatalogEntry."""
+        from cyberflash.core.rom_catalog import CatalogEntry
+
+        if not isinstance(entry, CatalogEntry):
+            return
+
+        if entry.download_path:
+            self._set_source(Path(entry.download_path))
+        else:
+            # Show URL as placeholder — user needs to download first
+            self._source_edit.setText(entry.url)
+            self._source_edit.setToolTip(
+                "ROM not downloaded yet. Use the ROM Catalog tab to download it first."
+            )
+
+        from cyberflash.core.rom_ai_scorer import RomScore
+
+        grade = RomScore.grade_from_score(entry.ai_score)
+        self._catalog_score_label.setText(
+            f"\u2605 Catalog pick: {entry.distro} {entry.version} — "
+            f"AI score [{grade}] {entry.ai_score:.0f}/100"
+        )
 
     # ── Browse for ROM source ─────────────────────────────────────────────────
 

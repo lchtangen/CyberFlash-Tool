@@ -27,6 +27,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from cyberflash.core.rom_catalog import RomCatalog
 from cyberflash.services.config_service import ConfigService
 from cyberflash.ui.themes.theme_engine import ThemeEngine
 from cyberflash.ui.widgets.cyber_card import CyberCard
@@ -471,6 +472,157 @@ class _AISection(CyberCard):
         logger.info("Gemini model updated to %s", model)
 
 
+# ── ROM Discovery section ─────────────────────────────────────────────────────
+
+
+class _DiscoverySection(CyberCard):
+    """ROM auto-discovery configuration and controls."""
+
+    discover_all_requested = Signal()
+
+    def __init__(self, config: ConfigService, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self._config = config
+        layout = self.card_layout()
+
+        # Header row
+        hdr = QHBoxLayout()
+        title = QLabel("ROM Discovery")
+        title.setObjectName("cardHeader")
+        hdr.addWidget(title)
+        hdr.addStretch()
+        self._discover_now_btn = QPushButton("Discover All Now")
+        self._discover_now_btn.setObjectName("primaryButton")
+        self._discover_now_btn.setFixedWidth(150)
+        self._discover_now_btn.clicked.connect(self.discover_all_requested)
+        hdr.addWidget(self._discover_now_btn)
+        layout.addLayout(hdr)
+
+        grid = QGridLayout()
+        grid.setSpacing(10)
+
+        # Auto-discover on startup
+        grid.addWidget(QLabel("Auto-discover:"), 0, 0)
+        self._auto_cb = QCheckBox("Scan ROM feeds on startup")
+        self._auto_cb.setChecked(config.get_bool("discovery/auto_start"))
+        self._auto_cb.toggled.connect(lambda v: config.set("discovery/auto_start", v))
+        grid.addWidget(self._auto_cb, 0, 1)
+
+        # Download directory
+        grid.addWidget(QLabel("Download dir:"), 1, 0)
+        dl_row = QHBoxLayout()
+        self._dl_dir_input = QLineEdit(config.get_str("discovery/download_dir"))
+        self._dl_dir_input.setPlaceholderText("Default (~/CyberFlash/Downloads)")
+        self._dl_dir_input.setReadOnly(True)
+        dl_row.addWidget(self._dl_dir_input)
+        dl_browse_btn = QPushButton("Browse\u2026")
+        dl_browse_btn.clicked.connect(self._browse_dl_dir)
+        dl_row.addWidget(dl_browse_btn)
+        grid.addLayout(dl_row, 1, 1)
+
+        # Max age days
+        grid.addWidget(QLabel("Max build age:"), 2, 0)
+        age_row = QHBoxLayout()
+        self._age_spin = QSpinBox()
+        self._age_spin.setRange(7, 730)
+        self._age_spin.setSuffix(" days")
+        self._age_spin.setValue(config.get_int("discovery/max_age_days") or 90)
+        self._age_spin.valueChanged.connect(lambda v: config.set("discovery/max_age_days", v))
+        age_row.addWidget(self._age_spin)
+        age_row.addStretch()
+        grid.addLayout(age_row, 2, 1)
+
+        # Last discovery timestamp
+        grid.addWidget(QLabel("Last scan:"), 3, 0)
+        try:
+            RomCatalog.load()
+            last = RomCatalog.last_scan_time()
+            last_text = last[:19].replace("T", " ") if last else "Never"
+        except Exception:
+            last_text = "Never"
+        self._last_lbl = QLabel(last_text)
+        self._last_lbl.setObjectName("kvValue")
+        grid.addWidget(self._last_lbl, 3, 1)
+
+        layout.addLayout(grid)
+
+    def _browse_dl_dir(self) -> None:
+        path = QFileDialog.getExistingDirectory(self, "Select ROM Download Directory")
+        if path:
+            self._dl_dir_input.setText(path)
+            self._config.set("discovery/download_dir", path)
+
+
+# ── App update section ────────────────────────────────────────────────────────
+
+
+class _UpdateSection(CyberCard):
+    """App update checker — shows current version and allows manual update check."""
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        layout = self.card_layout()
+
+        from cyberflash.services.update_service import UpdateService
+
+        self._update_svc = UpdateService.instance()
+
+        hdr = QHBoxLayout()
+        title = QLabel("App Updates")
+        title.setObjectName("cardHeader")
+        hdr.addWidget(title)
+        hdr.addStretch()
+        layout.addLayout(hdr)
+
+        version_row = QHBoxLayout()
+        version_row.addWidget(QLabel("Current version:"))
+        self._ver_lbl = QLabel(self._update_svc.get_current_version())
+        self._ver_lbl.setObjectName("kvValue")
+        version_row.addWidget(self._ver_lbl)
+        version_row.addStretch()
+        layout.addLayout(version_row)
+
+        btn_row = QHBoxLayout()
+        self._check_btn = QPushButton("Check for Updates")
+        self._check_btn.setObjectName("primaryButton")
+        self._check_btn.setFixedWidth(160)
+        self._check_btn.clicked.connect(self._check_update)
+        btn_row.addWidget(self._check_btn)
+        btn_row.addStretch()
+        layout.addLayout(btn_row)
+
+        self._status_lbl = QLabel("")
+        self._status_lbl.setObjectName("subtitleLabel")
+        self._status_lbl.setWordWrap(True)
+        layout.addWidget(self._status_lbl)
+
+    def _check_update(self) -> None:
+        from PySide6.QtCore import QThread
+
+        self._check_btn.setEnabled(False)
+        self._status_lbl.setText("Checking…")
+
+        svc = self._update_svc
+
+        class _Worker(QThread):
+            def run(self) -> None:
+                self.result = svc.check_update(force=True)
+
+        self._worker = _Worker(self)
+        self._worker.finished.connect(self._on_check_done)
+        self._worker.start()
+
+    def _on_check_done(self) -> None:
+        self._check_btn.setEnabled(True)
+        info = getattr(self._worker, "result", None)
+        if info is None:
+            self._status_lbl.setText("Up to date.")
+        else:
+            excerpt = (info.body[:120] + "…") if len(info.body) > 120 else info.body
+            self._status_lbl.setText(f"Update available: v{info.version}\n{excerpt}")
+        self._worker = None  # type: ignore[assignment]
+
+
 # ── Main page ────────────────────────────────────────────────────────────────
 
 
@@ -485,7 +637,17 @@ class SettingsPage(QWidget):
         super().__init__(parent)
         self.setObjectName("pageRoot")
         self._config = config_service or ConfigService.instance()
+        self._discovery_service: object | None = None
+        self._discovery_section: _DiscoverySection | None = None
         self._setup_ui()
+
+    def set_discovery_service(self, svc: object) -> None:
+        """Bind the ROM discovery service so the 'Discover All Now' button works."""
+        self._discovery_service = svc
+        if self._discovery_section is not None:
+            self._discovery_section.discover_all_requested.connect(
+                lambda: svc.discover_all()  # type: ignore[union-attr]
+            )
 
     def _setup_ui(self) -> None:
         root = QVBoxLayout(self)
@@ -520,6 +682,9 @@ class SettingsPage(QWidget):
         sl.addWidget(_FlashSection(self._config))
         sl.addWidget(_LoggingSection(self._config))
         sl.addWidget(_DownloadsSection(self._config))
+        self._discovery_section = _DiscoverySection(self._config)
+        sl.addWidget(self._discovery_section)
+        sl.addWidget(_UpdateSection())
 
         # Reset button
         reset_row = QHBoxLayout()
