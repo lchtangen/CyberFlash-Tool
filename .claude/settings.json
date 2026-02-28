@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ruff check src/:*)",
+      "Bash(ruff format src/:*)",
+      "Bash(mypy src/:*)",
+      "Bash(.venv/bin/pytest tests/:*)",
+      "Bash(pytest tests/:*)",
+      "Bash(pip install -e *)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(fastboot oem unlock:*)",
+      "Bash(fastboot flashing unlock:*)",
+      "Bash(adb reboot bootloader:*)"
+    ]
+  }
+}
